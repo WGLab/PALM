@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import torch
 
+from .hub import DEFAULT_ANNOTATION_REFERENCE
 from .model import PALM, PALMOutput, load_model, occurrence_probability
 
 
@@ -108,13 +109,16 @@ class PALMPredictor:
 
     def __init__(
         self,
-        checkpoint: str | Path,
+        checkpoint: str | Path = DEFAULT_ANNOTATION_REFERENCE,
         *,
         ipr_tsv: str | Path | None = None,
         device: str | torch.device = "auto",
         max_len: int | None = None,
         local_files_only: bool = False,
         amp: bool = True,
+        revision: str | None = None,
+        cache_dir: str | Path | None = None,
+        token: str | bool | None = None,
     ) -> None:
         self.model, self.checkpoint = load_model(
             checkpoint,
@@ -122,6 +126,9 @@ class PALMPredictor:
             max_len=max_len,
             local_files_only=local_files_only,
             require_epoch8=True,
+            revision=revision,
+            cache_dir=cache_dir,
+            token=token,
         )
         self.amp = bool(amp)
         self.domain_labels, self.site_labels = _label_information(
@@ -318,4 +325,3 @@ class PALMPredictor:
             "wt": wt,
             "mutant": mutant,
         }
-

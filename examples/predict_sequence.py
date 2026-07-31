@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from palm import PALMPredictor
+from palm import DEFAULT_ANNOTATION_REFERENCE, PALMPredictor
 
 
 def read_fasta(path: Path) -> str:
@@ -20,7 +20,7 @@ def main() -> None:
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--sequence")
     source.add_argument("--fasta", type=Path)
-    parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--checkpoint", default=DEFAULT_ANNOTATION_REFERENCE)
     parser.add_argument("--ipr-tsv", type=Path)
     parser.add_argument("--output-prefix", type=Path, required=True)
     parser.add_argument("--top-k", type=int, default=5)
@@ -44,4 +44,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

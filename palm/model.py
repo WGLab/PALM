@@ -18,6 +18,8 @@ from peft import LoraConfig, get_peft_model
 from torch import nn
 from transformers import AutoModel, AutoTokenizer
 
+from .hub import resolve_artifact
+
 
 class ScalarMix(nn.Module):
     """Learned weighted average of ESM hidden layers."""
@@ -245,11 +247,18 @@ def load_model(
     max_len: int | None = None,
     local_files_only: bool = False,
     require_epoch8: bool = True,
+    revision: str | None = None,
+    cache_dir: str | Path | None = None,
+    token: str | bool | None = None,
 ) -> tuple[PALM, dict[str, object]]:
     """Load the final PALM model and return it with its checkpoint metadata."""
-    path = Path(checkpoint_path)
-    if not path.is_file():
-        raise FileNotFoundError(path)
+    path = resolve_artifact(
+        checkpoint_path,
+        revision=revision,
+        cache_dir=cache_dir,
+        token=token,
+        local_files_only=local_files_only,
+    )
     # The training checkpoint also contains optimizer state and is about 2 GB.
     # Memory mapping prevents those tensors from being materialized during
     # inference and substantially lowers peak host-memory use.

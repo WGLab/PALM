@@ -1,5 +1,6 @@
 import torch
 
+from palm.hub import hf_reference, parse_hf_reference
 from palm.model import sparse_uniform_target_loss
 from palm.pathogenicity import PathogenicityHead, crop_around_position
 from palm.predictor import mutate_sequence
@@ -29,3 +30,11 @@ def test_pathogenicity_head_shape():
     head = PathogenicityHead(12, [8, 4], 0.1)
     assert head(torch.zeros(3, 12)).shape == (3,)
 
+
+def test_hugging_face_reference_round_trip():
+    reference = hf_reference("example/PALM", "pathogenicity/fold_1.pt")
+    assert reference == "hf://example/PALM::pathogenicity/fold_1.pt"
+    assert parse_hf_reference(reference) == (
+        "example/PALM",
+        "pathogenicity/fold_1.pt",
+    )

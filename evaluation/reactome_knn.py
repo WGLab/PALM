@@ -14,6 +14,7 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from transformers import AutoModel, AutoTokenizer
 
+from palm.hub import DEFAULT_ANNOTATION_REFERENCE
 from palm.model import load_model
 from palm.predictor import normalize_sequence
 
@@ -67,7 +68,7 @@ def knn_metrics(
 def arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--input", type=Path, required=True)
-    parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--checkpoint", default=DEFAULT_ANNOTATION_REFERENCE)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--sequence-column", default="sequence")
     parser.add_argument("--label-column", default="reactome_top_level")

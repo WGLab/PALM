@@ -7,7 +7,7 @@ import argparse
 import json
 from pathlib import Path
 
-from palm import PALMPredictor, PathogenicityEnsemble, mutate_sequence
+from palm import DEFAULT_ANNOTATION_REFERENCE, PALMPredictor, PathogenicityEnsemble, mutate_sequence
 
 
 def read_fasta(path: Path) -> str:
@@ -21,8 +21,8 @@ def main() -> None:
     parser.add_argument("--fasta", type=Path, required=True)
     parser.add_argument("--position", type=int, required=True)
     parser.add_argument("--mutant-aa", required=True)
-    parser.add_argument("--checkpoint", type=Path, required=True)
-    parser.add_argument("--head-checkpoints", type=Path, nargs="*")
+    parser.add_argument("--checkpoint", default=DEFAULT_ANNOTATION_REFERENCE)
+    parser.add_argument("--head-checkpoints", nargs="*")
     parser.add_argument("--output-prefix", type=Path, required=True)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--local-files-only", action="store_true")
@@ -62,4 +62,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,8 +1,17 @@
 # Checkpoints
 
-Model weights are intentionally not committed to ordinary Git history.
+Model weights are intentionally not committed to GitHub. They are hosted in the
+[Wangwpi/PALM Hugging Face model repository](https://huggingface.co/Wangwpi/PALM).
+By default, PALM downloads them using references such as:
 
-Place the final soft-target annotation checkpoint here as:
+```text
+hf://Wangwpi/PALM::palm_soft_target_epoch8.pt
+```
+
+This directory contains no model weights. It can optionally be used as a local,
+gitignored cache for offline use.
+
+The local fallback layout is:
 
 ```text
 checkpoints/palm_soft_target_epoch8.pt
@@ -21,13 +30,3 @@ score.
 
 The selected epochs for folds 1-5 are 3, 4, 4, 3, and 4, respectively, using
 inner-validation AUROC within the common 15-epoch selection budget.
-
-The SHA-256 checksum of the original epoch-8 training checkpoint, before
-optimizer/scaler removal, is:
-
-```text
-919fec8f2b9f0d0716f9a00a628fc44b6a4ca5d3b0d2dc26f4b746eb1f9b80d7
-```
-
-The exported inference checkpoint has a different checksum; publish that
-checksum alongside the final weight download.

@@ -12,6 +12,11 @@ from typing import Sequence
 import torch
 from torch import nn
 
+from .hub import (
+    DEFAULT_ANNOTATION_REFERENCE,
+    DEFAULT_PATHOGENICITY_HEAD_REFERENCES,
+    resolve_artifact,
+)
 from .model import PALM, load_model
 from .predictor import normalize_sequence
 
@@ -182,17 +187,32 @@ class PathogenicityEnsemble:
 
     def __init__(
         self,
-        palm_checkpoint: str | Path,
-        head_checkpoints: Sequence[str | Path],
+        palm_checkpoint: str | Path = DEFAULT_ANNOTATION_REFERENCE,
+        head_checkpoints: Sequence[str | Path] | None = None,
         *,
         device: str | torch.device = "auto",
         local_files_only: bool = False,
         amp: bool = True,
+        revision: str | None = None,
+        cache_dir: str | Path | None = None,
+        token: str | bool | None = None,
     ) -> None:
+        if head_checkpoints is None:
+            head_checkpoints = DEFAULT_PATHOGENICITY_HEAD_REFERENCES
         if not head_checkpoints:
             raise ValueError("At least one pathogenicity-head checkpoint is required.")
+        resolved_heads = [
+            resolve_artifact(
+                path,
+                revision=revision,
+                cache_dir=cache_dir,
+                token=token,
+                local_files_only=local_files_only,
+            )
+            for path in head_checkpoints
+        ]
         first_state = torch.load(
-            Path(head_checkpoints[0]),
+            resolved_heads[0],
             map_location="cpu",
             weights_only=False,
             mmap=True,
@@ -211,6 +231,9 @@ class PathogenicityEnsemble:
             max_len=self.max_len,
             local_files_only=local_files_only,
             require_epoch8=True,
+            revision=revision,
+            cache_dir=cache_dir,
+            token=token,
         )
         for parameter in palm.parameters():
             parameter.requires_grad_(False)
@@ -225,7 +248,7 @@ class PathogenicityEnsemble:
         self.heads: list[PathogenicityHead] = []
         self.head_epochs: list[int] = []
         del first_state
-        for path in head_checkpoints:
+        for path in resolved_heads:
             state = torch.load(
                 Path(path), map_location="cpu", weights_only=False, mmap=True
             )

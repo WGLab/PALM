@@ -30,26 +30,31 @@ from this directory.
 Python 3.10 or newer is recommended.
 
 ```bash
-git clone <PALM_REPOSITORY_URL>
+git clone https://github.com/Wangwpi/PALM.git
 cd PALM
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
 ```
 
-The first online run downloads `facebook/esm2_t30_150M_UR50D` from Hugging
-Face. In an offline environment, cache that model first and add
+The first online run downloads both the PALM checkpoint and
+`facebook/esm2_t30_150M_UR50D` from Hugging Face. Files are cached by
+`huggingface_hub`. In an offline environment, populate that cache first and add
 `--local-files-only` to the commands below.
 
 ## Model weights
 
-The final checkpoint is approximately 2.1 GB and should be distributed with
-Git LFS, a GitHub Release, Hugging Face, or Zenodo rather than committed to
-ordinary Git history. Download it to:
+Model weights are not stored in this GitHub repository. The final epoch-8
+annotation checkpoint and five optional pathogenicity heads are hosted in the
+[Wangwpi/PALM Hugging Face model repository](https://huggingface.co/Wangwpi/PALM).
+PALM uses this reference format:
 
 ```text
-checkpoints/palm_soft_target_epoch8.pt
+hf://Wangwpi/PALM::palm_soft_target_epoch8.pt
 ```
+
+The first call downloads the file to the normal Hugging Face cache; subsequent
+calls reuse the cached copy.
 
 The loader verifies both of the final-model metadata fields and requires epoch
 8:
@@ -62,16 +67,8 @@ epoch = 8
 
 The checkpoint contains the InterPro-to-class-index maps. An optional InterPro
 TSV supplies human-readable names and must have `ipr`, `type`, and `name` as its
-first three columns.
-
-Before uploading the original training checkpoint, remove optimizer and AMP
-scaler state to reduce the distribution artifact:
-
-```bash
-python training/export_inference_checkpoint.py \
-  --input runs/palm_soft_target/epoch_8.pt \
-  --output checkpoints/palm_soft_target_epoch8.pt
-```
+first three columns. For local or offline use, every API and `--checkpoint`
+option also accepts an ordinary filesystem path.
 
 ## Annotate a protein
 
@@ -80,7 +77,7 @@ Command line:
 ```bash
 python examples/predict_sequence.py \
   --fasta protein.fasta \
-  --checkpoint checkpoints/palm_soft_target_epoch8.pt \
+  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
   --ipr-tsv data/ipr_domain_sites_entry.tsv \
   --output-prefix results/protein
 ```
@@ -98,7 +95,7 @@ Python API:
 from palm import PALMPredictor
 
 predictor = PALMPredictor(
-    "checkpoints/palm_soft_target_epoch8.pt",
+    "hf://Wangwpi/PALM::palm_soft_target_epoch8.pt",
     ipr_tsv="data/ipr_domain_sites_entry.tsv",
     device="cuda",
 )
@@ -121,7 +118,7 @@ python examples/predict_variant.py \
   --fasta PTEN.fasta \
   --position 124 \
   --mutant-aa S \
-  --checkpoint checkpoints/palm_soft_target_epoch8.pt \
+  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
   --output-prefix results/PTEN_C124S
 ```
 
@@ -138,13 +135,13 @@ checkpoints to `predict_variant.py`, or load them directly:
 from palm import PathogenicityEnsemble, mutate_sequence
 
 model = PathogenicityEnsemble(
-    "checkpoints/palm_soft_target_epoch8.pt",
+    "hf://Wangwpi/PALM::palm_soft_target_epoch8.pt",
     [
-        "checkpoints/pathogenicity_random_split/fold_1.pt",
-        "checkpoints/pathogenicity_random_split/fold_2.pt",
-        "checkpoints/pathogenicity_random_split/fold_3.pt",
-        "checkpoints/pathogenicity_random_split/fold_4.pt",
-        "checkpoints/pathogenicity_random_split/fold_5.pt",
+        "hf://Wangwpi/PALM::pathogenicity/random_split_fold_1.pt",
+        "hf://Wangwpi/PALM::pathogenicity/random_split_fold_2.pt",
+        "hf://Wangwpi/PALM::pathogenicity/random_split_fold_3.pt",
+        "hf://Wangwpi/PALM::pathogenicity/random_split_fold_4.pt",
+        "hf://Wangwpi/PALM::pathogenicity/random_split_fold_5.pt",
     ],
 )
 mutant = mutate_sequence(wt_sequence, 124, "S")
@@ -193,7 +190,7 @@ cluster path, result table, or unpublished dataset is embedded in the code.
 
 ```bash
 python evaluation/evaluate_annotation.py \
-  --checkpoint checkpoints/palm_soft_target_epoch8.pt \
+  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
   --test-dir data/uniref50/test \
   --ipr-tsv data/ipr_domain_sites_entry.tsv \
   --output-dir results/annotation_test
@@ -212,7 +209,7 @@ and the same four-head metrics are written for every PID bin.
 ```bash
 python evaluation/zero_shot_pathogenicity.py \
   --input data/variants_with_sequences.tsv \
-  --checkpoint checkpoints/palm_soft_target_epoch8.pt \
+  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
   --output-dir results/zero_shot
 ```
 
@@ -238,8 +235,13 @@ preprocessing and must be reported; it is not learned by PALM.
 ```bash
 python evaluation/evaluate_pathogenicity_ensemble.py \
   --input data/variants_with_sequences.tsv \
-  --palm-checkpoint checkpoints/palm_soft_target_epoch8.pt \
-  --head-checkpoints checkpoints/pathogenicity_random_split/fold_{1,2,3,4,5}.pt \
+  --palm-checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
+  --head-checkpoints \
+    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_1.pt' \
+    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_2.pt' \
+    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_3.pt' \
+    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_4.pt' \
+    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_5.pt' \
   --output results/pathogenicity_predictions.tsv
 ```
 
@@ -267,7 +269,7 @@ that same subset.
 ```bash
 python evaluation/reactome_knn.py \
   --input data/reactome_proteins.tsv \
-  --checkpoint checkpoints/palm_soft_target_epoch8.pt \
+  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
   --include-esm2 \
   --output-dir results/reactome
 ```
@@ -281,7 +283,7 @@ Embeddings are standardized, and leave-one-out cosine kNN is evaluated at
 ```bash
 python evaluation/flexinr_screen.py \
   --input data/flexinr_paired_variants.tsv \
-  --checkpoint checkpoints/palm_soft_target_epoch8.pt \
+  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
   --include-esm2 \
   --output-dir results/flexinr
 ```
@@ -350,7 +352,7 @@ training/       final training code, Slurm template, checkpoint export utility
 evaluation/     annotation, zero-shot, supervised, Reactome, and FlexiNR code
 visualization/  annotation plots and PDB B-factor export
 examples/       minimal sequence and missense-variant examples
-checkpoints/    weight placement instructions; weights are gitignored
+checkpoints/    link and optional local-cache instructions; weights are gitignored
 tests/          lightweight tests that do not download model weights
 ```
 
@@ -369,7 +371,6 @@ tests/          lightweight tests that do not download model weights
 - Do not compare metrics across cohorts or transcript-mapping pipelines as if
   they differed only by model checkpoint.
 
-## Citation and license
+## Citation
 
-Add the paper citation, model-weight DOI/URL, author list, and the selected
-software/model license before making the repository public.
+Citation information will be added when the PALM manuscript is available.

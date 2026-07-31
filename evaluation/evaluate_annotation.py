@@ -13,6 +13,7 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 
+from palm.hub import DEFAULT_ANNOTATION_REFERENCE
 from palm.model import load_model
 from training.train_soft_target import (
     FastaShardDataset,
@@ -65,7 +66,7 @@ def prf(values: np.ndarray) -> dict[str, float]:
 
 def arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--checkpoint", default=DEFAULT_ANNOTATION_REFERENCE)
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--test-dir", type=Path)
     source.add_argument(

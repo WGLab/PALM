@@ -23,6 +23,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from transformers import AutoModelForMaskedLM, AutoTokenizer
 
+from palm.hub import DEFAULT_ANNOTATION_REFERENCE
 from palm.model import load_model
 from palm.predictor import normalize_sequence
 
@@ -343,7 +344,7 @@ def evaluate(
 def arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--input", type=Path, required=True)
-    parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--checkpoint", default=DEFAULT_ANNOTATION_REFERENCE)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--esm-checkpoint", default="facebook/esm2_t30_150M_UR50D")
     parser.add_argument("--include-esm2", action="store_true")

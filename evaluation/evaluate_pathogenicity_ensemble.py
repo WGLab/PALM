@@ -9,6 +9,7 @@ from pathlib import Path
 import pandas as pd
 from sklearn.metrics import average_precision_score, roc_auc_score
 
+from palm.hub import DEFAULT_ANNOTATION_REFERENCE, DEFAULT_PATHOGENICITY_HEAD_REFERENCES
 from palm.pathogenicity import PathogenicityEnsemble
 from palm.predictor import mutate_sequence
 
@@ -16,8 +17,12 @@ from palm.predictor import mutate_sequence
 def arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--input", type=Path, required=True)
-    parser.add_argument("--palm-checkpoint", type=Path, required=True)
-    parser.add_argument("--head-checkpoints", type=Path, nargs="+", required=True)
+    parser.add_argument("--palm-checkpoint", default=DEFAULT_ANNOTATION_REFERENCE)
+    parser.add_argument(
+        "--head-checkpoints",
+        nargs="+",
+        default=DEFAULT_PATHOGENICITY_HEAD_REFERENCES,
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--wt-column", default="wt_sequence")
     parser.add_argument("--mutant-column", default="mutant_sequence")
@@ -80,4 +85,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
