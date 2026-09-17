@@ -29,10 +29,17 @@ for CUDA 12.8, and the Hugging Face stack).
 git clone https://github.com/WGLab/PALM.git
 cd PALM
 
-conda env create -f environment.yml
+PYTHONNOUSERSITE=1 conda env create -f environment.yml
 conda activate palm
 pip install -e . --no-deps
 ```
+
+`PYTHONNOUSERSITE=1` is not optional if you have packages in
+`~/.local/lib/python3.10/site-packages`. Without it, pip counts those as
+already satisfied and skips installing them into the environment, which leaves
+the environment incomplete and quietly dependent on your home directory — the
+usual symptom is an unrelated `ModuleNotFoundError` on first import. The
+environment sets the same variable on activation.
 
 The last step makes `palm` importable from anywhere in the environment.
 `environment.yml` has already installed the dependencies at their pinned
@@ -48,8 +55,8 @@ first run:
 python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
 ```
 
-`environment.yml` lists only what PALM itself imports: torch, transformers,
-peft, huggingface-hub, numpy, and pandas. The extra packages used by the
+`environment.yml` lists only what PALM itself needs: torch, transformers, peft,
+huggingface-hub, numpy, pandas, and tqdm. The extra packages used by the
 development code under `docs/` (scipy, scikit-learn, matplotlib) are commented
 out at the bottom of the file; uncomment them, or run
 `pip install -e ".[docs]"`, if you need them.
