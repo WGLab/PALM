@@ -21,8 +21,9 @@ of that comparison; their mean gives a supervised missense pathogenicity score.
 
 ## Installation
 
-PALM runs in a conda environment defined by [`environment.yml`](environment.yml)
-(Python 3.10, PyTorch, and the Hugging Face stack).
+PALM runs in a conda environment defined by [`environment.yml`](environment.yml),
+which pins a known-working set of versions (Python 3.10.15, PyTorch 2.10 built
+for CUDA 12.8, and the Hugging Face stack).
 
 ```bash
 git clone https://github.com/WGLab/PALM.git
@@ -33,21 +34,25 @@ conda activate palm
 pip install -e . --no-deps
 ```
 
-The last step makes `palm` importable from anywhere in the environment; conda
-has already installed the dependencies, so `--no-deps` keeps pip from pulling
-its own copies of PyTorch.
+The last step makes `palm` importable from anywhere in the environment.
+`environment.yml` has already installed the dependencies at their pinned
+versions, so `--no-deps` keeps pip from resolving and replacing them.
 
-`environment.yml` pins a CUDA build of PyTorch. Change `pytorch-cuda=12.1` to
-match the CUDA version your driver supports, or, for a CPU-only machine, drop
-that line and the `nvidia` channel and add `cpuonly`. Verify the GPU is
-visible before a first run:
+`torch` is installed from the PyTorch CUDA 12.8 wheel index. If your driver
+supports a different CUDA version, change the `--extra-index-url` and the
+`+cu128` suffix on the torch pin to match; for a CPU-only machine, use the
+plain `torch==2.10.0` with no extra index. Verify the GPU is visible before a
+first run:
 
 ```bash
 python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
 ```
 
-If `conda` is slow to solve this environment, `mamba env create -f
-environment.yml` is a drop-in replacement.
+`environment.yml` lists only what PALM itself imports: torch, transformers,
+peft, huggingface-hub, numpy, and pandas. The extra packages used by the
+development code under `docs/` (scipy, scikit-learn, matplotlib) are commented
+out at the bottom of the file; uncomment them, or run
+`pip install -e ".[docs]"`, if you need them.
 
 ### Model weights
 
