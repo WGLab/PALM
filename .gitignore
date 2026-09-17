@@ -1,0 +1,15 @@
+# Model weights are hosted on Hugging Face, never committed here.
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Notebooks / results
+.ipynb_checkpoints/
+results/

@@ -1,2 +1,0 @@
-"""PALM training entry points."""
-

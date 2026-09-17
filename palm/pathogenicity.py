@@ -193,6 +193,7 @@ class PathogenicityEnsemble:
         device: str | torch.device = "auto",
         local_files_only: bool = False,
         amp: bool = True,
+        checkpoint_dir: str | Path | None = None,
         revision: str | None = None,
         cache_dir: str | Path | None = None,
         token: str | bool | None = None,
@@ -204,6 +205,7 @@ class PathogenicityEnsemble:
         resolved_heads = [
             resolve_artifact(
                 path,
+                checkpoint_dir=checkpoint_dir,
                 revision=revision,
                 cache_dir=cache_dir,
                 token=token,
@@ -231,6 +233,7 @@ class PathogenicityEnsemble:
             max_len=self.max_len,
             local_files_only=local_files_only,
             require_epoch8=True,
+            checkpoint_dir=checkpoint_dir,
             revision=revision,
             cache_dir=cache_dir,
             token=token,

@@ -22,7 +22,22 @@ def main() -> None:
     parser.add_argument("--position", type=int, required=True)
     parser.add_argument("--mutant-aa", required=True)
     parser.add_argument("--checkpoint", default=DEFAULT_ANNOTATION_REFERENCE)
-    parser.add_argument("--head-checkpoints", nargs="*")
+    parser.add_argument(
+        "--checkpoint-dir",
+        type=Path,
+        help="Directory holding downloaded weights; overrides the PALM_CHECKPOINT_DIR "
+        "environment variable. Files not found there are fetched from Hugging Face.",
+    )
+    parser.add_argument(
+        "--pathogenicity",
+        action="store_true",
+        help="Also run the supervised PALM-pathogenicity ensemble.",
+    )
+    parser.add_argument(
+        "--head-checkpoints",
+        nargs="*",
+        help="Override the five default pathogenicity heads.",
+    )
     parser.add_argument("--output-prefix", type=Path, required=True)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--local-files-only", action="store_true")
@@ -32,6 +47,7 @@ def main() -> None:
     mutant = mutate_sequence(wt, args.position, args.mutant_aa)
     predictor = PALMPredictor(
         args.checkpoint,
+        checkpoint_dir=args.checkpoint_dir,
         device=args.device,
         local_files_only=args.local_files_only,
     )
@@ -44,10 +60,11 @@ def main() -> None:
         for key, value in comparison.items()
         if key not in {"per_residue", "wt", "mutant"}
     }
-    if args.head_checkpoints:
+    if args.pathogenicity or args.head_checkpoints:
         ensemble = PathogenicityEnsemble(
             args.checkpoint,
-            args.head_checkpoints,
+            args.head_checkpoints or None,
+            checkpoint_dir=args.checkpoint_dir,
             device=args.device,
             local_files_only=args.local_files_only,
         )

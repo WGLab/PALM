@@ -1,6 +1,7 @@
 """PALM: protein annotation with a language model."""
 
 from .hub import (
+    CHECKPOINT_DIR_ENV,
     DEFAULT_ANNOTATION_REFERENCE,
     DEFAULT_HF_REPO_ID,
     DEFAULT_PATHOGENICITY_HEAD_REFERENCES,
@@ -16,6 +17,7 @@ __all__ = [
     "PALMOutput",
     "PALMPredictor",
     "PathogenicityEnsemble",
+    "CHECKPOINT_DIR_ENV",
     "DEFAULT_ANNOTATION_REFERENCE",
     "DEFAULT_HF_REPO_ID",
     "DEFAULT_PATHOGENICITY_HEAD_REFERENCES",

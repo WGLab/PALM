@@ -247,6 +247,7 @@ def load_model(
     max_len: int | None = None,
     local_files_only: bool = False,
     require_epoch8: bool = True,
+    checkpoint_dir: str | Path | None = None,
     revision: str | None = None,
     cache_dir: str | Path | None = None,
     token: str | bool | None = None,
@@ -254,6 +255,7 @@ def load_model(
     """Load the final PALM model and return it with its checkpoint metadata."""
     path = resolve_artifact(
         checkpoint_path,
+        checkpoint_dir=checkpoint_dir,
         revision=revision,
         cache_dir=cache_dir,
         token=token,
