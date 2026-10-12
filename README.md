@@ -21,82 +21,21 @@ of that comparison; their mean gives a supervised missense pathogenicity score.
 
 ## Installation
 
-PALM runs in a conda environment defined by [`environment.yml`](environment.yml),
-which pins a known-working set of versions (Python 3.10.15, PyTorch 2.10 built
-for CUDA 12.8, and the Hugging Face stack).
-
 ```bash
 git clone https://github.com/WGLab/PALM.git
 cd PALM
-
 PYTHONNOUSERSITE=1 conda env create -f environment.yml
 conda activate palm
 pip install -e . --no-deps
 ```
 
-`PYTHONNOUSERSITE=1` is not optional if you have packages in
-`~/.local/lib/python3.10/site-packages`. Without it, pip counts those as
-already satisfied and skips installing them into the environment, which leaves
-the environment incomplete and quietly dependent on your home directory — the
-usual symptom is an unrelated `ModuleNotFoundError` on first import. The
-environment sets the same variable on activation.
-
-The last step makes `palm` importable from anywhere in the environment.
-`environment.yml` has already installed the dependencies at their pinned
-versions, so `--no-deps` keeps pip from resolving and replacing them.
-
-`torch` is installed from the PyTorch CUDA 12.8 wheel index. If your driver
-supports a different CUDA version, change the `--extra-index-url` and the
-`+cu128` suffix on the torch pin to match; for a CPU-only machine, use the
-plain `torch==2.10.0` with no extra index. Verify the GPU is visible before a
-first run:
+Model weights download automatically from
+[Wangwpi/PALM](https://huggingface.co/Wangwpi/PALM) on first use, or in advance:
 
 ```bash
-python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
-```
-
-`environment.yml` lists only what PALM itself needs: torch, transformers, peft,
-huggingface-hub, numpy, pandas, and tqdm. The extra packages used by the
-development code under `docs/` (scipy, scikit-learn, matplotlib) are commented
-out at the bottom of the file; uncomment them, or run
-`pip install -e ".[docs]"`, if you need them.
-
-### Model weights
-
-Weights are not stored in this repository. They live in the
-[Wangwpi/PALM](https://huggingface.co/Wangwpi/PALM) Hugging Face model
-repository:
-
-| File | What it is |
-|---|---|
-| `palm_soft_target_epoch8.pt` | the PALM annotation model |
-| `pathogenicity/random_split_fold_{1..5}.pt` | the five PALM-pathogenicity heads |
-
-You do not have to download anything by hand — PALM fetches what it needs on
-first use and caches it. To download everything up front (recommended for
-offline or cluster use):
-
-```bash
-conda activate palm
 hf download Wangwpi/PALM --local-dir checkpoints
+export PALM_CHECKPOINT_DIR=$PWD/checkpoints
 ```
-
-(`hf` comes with the `huggingface-hub` package already in the environment; on
-older versions the command is `huggingface-cli download`.)
-
-Then point PALM at that directory, either per run with `--checkpoint-dir` /
-`checkpoint_dir=`, or once for the whole shell:
-
-```bash
-export PALM_CHECKPOINT_DIR=/path/to/checkpoints
-```
-
-Files found there are used directly; anything missing still falls back to the
-Hugging Face download. A single checkpoint file can also be given by path.
-
-PALM additionally downloads its base model, `facebook/esm2_t30_150M_UR50D`,
-from Hugging Face on first use. Add `--local-files-only` (or
-`local_files_only=True`) to run fully offline once everything is cached.
 
 ## Usage
 
