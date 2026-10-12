@@ -247,6 +247,7 @@ def load_model(
     max_len: int | None = None,
     local_files_only: bool = False,
     require_epoch8: bool = True,
+    checkpoint_dir: str | Path | None = None,
     revision: str | None = None,
     cache_dir: str | Path | None = None,
     token: str | bool | None = None,
@@ -254,6 +255,7 @@ def load_model(
     """Load the final PALM model and return it with its checkpoint metadata."""
     path = resolve_artifact(
         checkpoint_path,
+        checkpoint_dir=checkpoint_dir,
         revision=revision,
         cache_dir=cache_dir,
         token=token,
@@ -275,6 +277,17 @@ def load_model(
         checkpoint, max_len=max_len, local_files_only=local_files_only
     )
     missing, unexpected = model.load_state_dict(checkpoint["model_state_dict"], strict=False)
+    # ESM2 uses rotary position embeddings, so EsmEmbeddings.forward never reads
+    # `position_embeddings`. Recent transformers versions nevertheless allocate
+    # that parameter unconditionally, while the PALM checkpoint was saved
+    # without it. Ignore exactly that unused weight; every other tensor is still
+    # required to match.
+    if getattr(model.esm_config, "position_embedding_type", "absolute") != "absolute":
+        missing = [
+            key
+            for key in missing
+            if not key.endswith("embeddings.position_embeddings.weight")
+        ]
     if missing or unexpected:
         raise RuntimeError(f"Checkpoint mismatch: missing={missing}; unexpected={unexpected}")
     if device == "auto":

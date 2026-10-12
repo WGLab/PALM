@@ -1,0 +1,42 @@
+# Conda environment for running PALM.
+#
+#   PYTHONNOUSERSITE=1 conda env create -f environment.yml
+#   conda activate palm
+#   pip install -e . --no-deps
+#
+# PYTHONNOUSERSITE=1 matters: without it, pip treats packages already present in
+# ~/.local/lib/pythonX.Y/site-packages as satisfied and skips installing them
+# into the environment, which leaves the environment incomplete and silently
+# dependent on whatever is in your home directory.
+#
+# Versions are pinned to a known-working CUDA 12.8 setup. torch is installed
+# from the PyTorch cu128 wheel index; change the index URL and the torch local
+# version (+cu128) to match the CUDA version your driver supports, or use the
+# plain CPU wheel `torch==2.10.0` with no extra index for a CPU-only machine.
+#
+# These are only the packages PALM itself needs. The extra packages used by
+# docs/evaluation and docs/visualization are listed at the bottom, commented out.
+name: palm
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10.15
+  - pip
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu128
+      - torch==2.10.0+cu128
+      - transformers==4.48.1
+      - peft==0.18.1
+      - huggingface-hub==0.36.2
+      - numpy==1.26.4
+      - pandas==2.2.3
+      - tqdm==4.66.6   # required by huggingface-hub at import time
+
+      # Only needed for docs/evaluation and docs/visualization; uncomment to use:
+      # - scipy==1.13.1
+      # - scikit-learn==1.6.1
+      # - matplotlib==3.10.1
+
+# Keep the activated environment from importing packages out of ~/.local.
+variables:
+  PYTHONNOUSERSITE: "1"

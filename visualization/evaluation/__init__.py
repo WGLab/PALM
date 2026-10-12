@@ -1,2 +1,0 @@
-"""PALM evaluation entry points."""
-
