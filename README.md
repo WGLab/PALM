@@ -33,8 +33,14 @@ pip install -e . --no-deps
 
 Conda builds the environment and pip installs the packages, as two steps: if
 the pip step fails on a busy cluster it can simply be re-run, whereas a failure
-inside `conda env create` discards the whole environment. Expect roughly
-20-30 minutes and about 8 GB, most of it the CUDA build of PyTorch.
+inside `conda env create` discards the whole environment.
+
+A full install takes about **20 minutes** and **7.6 GB** (measured on an HPC
+node: 11 min for step 1, 6.5 min for step 2, the rest the editable install and
+first import). Step 1 is dominated by conda's dependency solve, not by
+downloads; if your conda uses the classic solver, `conda env create
+--solver=libmamba -f environment.yml`, or `mamba`, cuts that to well under a
+minute. Model weights are a further 3 GB, downloaded on first use.
 
 Model weights download automatically from
 [Wangwpi/PALM](https://huggingface.co/Wangwpi/PALM) on first use, or in advance:
