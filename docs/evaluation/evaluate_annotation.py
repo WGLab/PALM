@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import glob
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -15,6 +16,11 @@ from torch.utils.data import DataLoader
 
 from palm.hub import DEFAULT_ANNOTATION_REFERENCE
 from palm.model import load_model
+
+# The training code lives beside this file under docs/, which is not an
+# installed package; add docs/ to the path so `training` resolves.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from training.train_soft_target import (
     FastaShardDataset,
     collate,
@@ -74,7 +80,11 @@ def arguments() -> argparse.Namespace:
         type=Path,
         help="Directory containing pid_* subdirectories of FASTA shards.",
     )
-    parser.add_argument("--ipr-tsv", type=Path, required=True)
+    parser.add_argument(
+        "--ipr-tsv",
+        type=Path,
+        help="Optional InterPro table, checked for coverage of the checkpoint classes.",
+    )
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--workers", type=int, default=2)
@@ -159,11 +169,24 @@ def main() -> None:
         max_len=args.max_len,
         local_files_only=args.local_files_only,
     )
-    domain_map, site_map = load_label_maps(args.ipr_tsv)
+    # Class indices must come from the checkpoint. Rebuilding them from the
+    # InterPro TSV would make them depend on that file's row order, which
+    # silently yields wrong per-class metrics whenever the order differs from
+    # the one used during training.
+    domain_map = {str(ipr): int(i) for ipr, i in dict(checkpoint["ipr2domain"]).items()}
+    site_map = {str(ipr): int(i) for ipr, i in dict(checkpoint["ipr2site"]).items()}
     if len(domain_map) != int(checkpoint["num_domain_classes"]):
         raise ValueError("Domain class map does not match checkpoint.")
     if len(site_map) != int(checkpoint["num_site_classes"]):
         raise ValueError("Site class map does not match checkpoint.")
+    if args.ipr_tsv is not None:
+        tsv_domain, tsv_site = load_label_maps(args.ipr_tsv)
+        absent = (set(domain_map) - set(tsv_domain)) | (set(site_map) - set(tsv_site))
+        if absent:
+            raise ValueError(
+                f"{args.ipr_tsv} is missing {len(absent)} InterPro entries present in "
+                "the checkpoint; it is not the table this model was trained with."
+            )
     if args.test_dir is not None:
         targets = [("all", sorted(glob.glob(str(args.test_dir / "*.fasta"))))]
     else:

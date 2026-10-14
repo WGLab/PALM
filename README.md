@@ -85,9 +85,11 @@ predictor = PALMPredictor("hf://Wangwpi/PALM::palm_soft_target_epoch8.pt")
 ### Command line
 
 ```bash
-# one sequence, or every record in a multi-record FASTA
-python examples/predict_sequence.py --fasta protein.fasta --output-prefix results/protein
+python examples/predict_sequence.py --fasta examples/ubiquitin.fasta --output-prefix results/ubiquitin
 ```
+
+Every record in a multi-record FASTA is annotated. The bundled example returns
+`IPR000626` (ubiquitin-like domain) across all 76 residues.
 
 Useful options: `--sequence` instead of `--fasta`, `--checkpoint-dir`,
 `--checkpoint`, `--top-k`, `--device`, `--local-files-only`, and `--ipr-tsv`
