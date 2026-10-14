@@ -24,10 +24,17 @@ of that comparison; their mean gives a supervised missense pathogenicity score.
 ```bash
 git clone https://github.com/WGLab/PALM.git
 cd PALM
-PYTHONNOUSERSITE=1 conda env create -f environment.yml
+
+conda env create -f environment.yml     # 1. base environment
 conda activate palm
+pip install -r requirements.txt         # 2. Python packages
 pip install -e . --no-deps
 ```
+
+Conda builds the environment and pip installs the packages, as two steps: if
+the pip step fails on a busy cluster it can simply be re-run, whereas a failure
+inside `conda env create` discards the whole environment. Expect roughly
+20-30 minutes and about 8 GB, most of it the CUDA build of PyTorch.
 
 Model weights download automatically from
 [Wangwpi/PALM](https://huggingface.co/Wangwpi/PALM) on first use, or in advance:
