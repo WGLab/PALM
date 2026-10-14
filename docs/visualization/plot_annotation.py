@@ -14,9 +14,39 @@ import pandas as pd
 from matplotlib.patches import Patch
 
 
+#: tab20 alone gives only 20 colors, so a figure showing more than 20 classes was
+#: guaranteed to draw two different InterPro entries in the same color. Combining
+#: the three qualitative maps gives 60.
+PALETTE = [
+    plt.get_cmap(name)(index)
+    for name in ("tab20", "tab20b", "tab20c")
+    for index in range(20)
+]
+
+
+def palette_index(label: str) -> int:
+    """Deterministic starting slot, so a class keeps its color across figures."""
+    return int(hashlib.md5(label.encode()).hexdigest()[:8], 16) % len(PALETTE)
+
+
 def stable_color(label: str) -> tuple[float, float, float, float]:
-    index = int(hashlib.md5(label.encode()).hexdigest()[:8], 16) % 20
-    return plt.get_cmap("tab20")(index)
+    return PALETTE[palette_index(label)]
+
+
+def assign_color(label: str, taken: set[int]) -> tuple[float, float, float, float]:
+    """Pick this label's color, stepping past slots already used in the figure.
+
+    Keeps the hash-derived color whenever it is free, so colors stay stable
+    between figures, while guaranteeing that no two classes drawn together are
+    given the same color.
+    """
+    start = palette_index(label)
+    for offset in range(len(PALETTE)):
+        index = (start + offset) % len(PALETTE)
+        if index not in taken:
+            taken.add(index)
+            return PALETTE[index]
+    return PALETTE[start]
 
 
 def load_result(tsv: Path, npz: Path) -> tuple[pd.DataFrame, dict[str, np.ndarray], dict, dict]:
@@ -25,6 +55,13 @@ def load_result(tsv: Path, npz: Path) -> tuple[pd.DataFrame, dict[str, np.ndarra
     domain_labels = {int(key): value for key, value in json.loads(str(arrays["domain_labels"])).items()}
     site_labels = {int(key): value for key, value in json.loads(str(arrays["site_labels"])).items()}
     return table, arrays, domain_labels, site_labels
+
+
+# A probability of exactly 1.0 drawn with ylim (0, 1) lands on the top spine and
+# disappears, which is the common case for confidently annotated residues. Pad
+# the occurrence axes so the curve stays inside the panel.
+OCCURRENCE_YLIM = (-0.04, 1.04)
+OCCURRENCE_YTICKS = (0.0, 0.25, 0.5, 0.75, 1.0)
 
 
 def selected_classes(probabilities: np.ndarray, threshold: float, maximum: int) -> np.ndarray:
@@ -43,6 +80,7 @@ def plot_stack(
     threshold: float,
     maximum: int,
     title: str,
+    taken: set[int],
 ) -> list[Patch]:
     selected = selected_classes(probabilities, threshold, maximum)
     bottom = np.zeros(len(positions))
@@ -50,7 +88,7 @@ def plot_stack(
     for class_id in selected:
         info = labels[int(class_id)]
         label = f"{info['name']} ({info['ipr']})"
-        color = stable_color(info["ipr"])
+        color = assign_color(info["ipr"], taken)
         values = probabilities[:, class_id]
         axis.fill_between(positions, bottom, bottom + values, color=color, linewidth=0)
         bottom += values
@@ -77,9 +115,13 @@ def main() -> None:
 
     table, arrays, domain_labels, site_labels = load_result(args.tsv, args.npz)
     positions = table["position"].to_numpy()
+    taken: set[int] = set()
     fig, axes = plt.subplots(4, 1, figsize=(13, 7), sharex=True)
-    axes[0].plot(positions, table["domain_occurrence_probability"], color="#22543D")
-    axes[0].set_ylim(0, 1)
+    axes[0].plot(
+        positions, table["domain_occurrence_probability"], color="#22543D", linewidth=1.6
+    )
+    axes[0].set_ylim(OCCURRENCE_YLIM)
+    axes[0].set_yticks(OCCURRENCE_YTICKS)
     axes[0].set_ylabel("Occurrence")
     axes[0].set_title("Domain occurrence", loc="left")
     domain_handles = plot_stack(
@@ -90,9 +132,13 @@ def main() -> None:
         args.class_threshold,
         args.max_classes,
         "Domain classes",
+        taken,
     )
-    axes[2].plot(positions, table["site_occurrence_probability"], color="#1E3A5F")
-    axes[2].set_ylim(0, 1)
+    axes[2].plot(
+        positions, table["site_occurrence_probability"], color="#1E3A5F", linewidth=1.6
+    )
+    axes[2].set_ylim(OCCURRENCE_YLIM)
+    axes[2].set_yticks(OCCURRENCE_YTICKS)
     axes[2].set_ylabel("Occurrence")
     axes[2].set_title("Site occurrence", loc="left")
     site_handles = plot_stack(
@@ -103,6 +149,7 @@ def main() -> None:
         args.class_threshold,
         args.max_classes,
         "Site classes",
+        taken,
     )
     axes[3].set_xlabel("Residue position")
     fig.suptitle(args.title)
