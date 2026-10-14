@@ -57,6 +57,24 @@ and site InterPro classes with their probabilities, and the top-`k` classes per
 residue. `result.save(...)` also writes an `.npz` holding the full class
 probability matrices and the PALM residue embeddings.
 
+### InterPro class labels
+
+Each prediction head outputs a probability per InterPro class. The released
+checkpoint carries the accession-to-index maps itself, and
+[`palm/interpro_classes.tsv`](palm/interpro_classes.tsv) ships the full table:
+
+```text
+head    class_index  interpro_id  interpro_type  name
+domain  0            IPR000001    Domain         Kringle
+site    0            IPR000035    Conserved_site Alkylbase DNA glycosidase, conserved site
+```
+
+`class_index` is 0-based and **per head**: domain indices run 0-17950 and site
+indices restart at 0 and run to 1382. PALM reads this table automatically, so
+results come back with readable names (`domain_top_name`,
+and the `name` field inside `top_domain_classes`) without any extra argument.
+Pass `ipr_tsv=` / `--ipr-tsv` only to override it with a different table.
+
 ### Annotate a list of sequences
 
 ```python
