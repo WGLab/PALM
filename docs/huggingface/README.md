@@ -24,8 +24,22 @@ pathogenicity/random_split_fold_2.pt
 pathogenicity/random_split_fold_3.pt
 pathogenicity/random_split_fold_4.pt
 pathogenicity/random_split_fold_5.pt
+interpro_classes.tsv
 checkpoint_manifest.json
 ```
+
+`interpro_classes.tsv` maps every output class to its InterPro entry:
+
+```text
+head    class_index  interpro_id  interpro_type  name
+domain  0            IPR000001    Domain         Kringle
+site    0            IPR000035    Conserved_site Alkylbase DNA glycosidase, conserved site
+```
+
+`class_index` is 0-based and per head: domain indices run 0-17950, and site
+indices restart at 0 and run to 1382. The checkpoint itself carries the same
+accession-to-index maps as `ipr2domain` and `ipr2site`; this file adds the
+human-readable names.
 
 The annotation checkpoint predicts four residue-level outputs:
 
