@@ -24,10 +24,23 @@ of that comparison; their mean gives a supervised missense pathogenicity score.
 ```bash
 git clone https://github.com/WGLab/PALM.git
 cd PALM
-PYTHONNOUSERSITE=1 conda env create -f environment.yml
+
+conda env create -f environment.yml     # 1. base environment
 conda activate palm
+pip install -r requirements.txt         # 2. Python packages
 pip install -e . --no-deps
 ```
+
+Conda builds the environment and pip installs the packages, as two steps: if
+the pip step fails on a busy cluster it can simply be re-run, whereas a failure
+inside `conda env create` discards the whole environment.
+
+A full install takes about **20 minutes** and **7.6 GB** (measured on an HPC
+node: 11 min for step 1, 6.5 min for step 2, the rest the editable install and
+first import). Step 1 is dominated by conda's dependency solve, not by
+downloads; if your conda uses the classic solver, `conda env create
+--solver=libmamba -f environment.yml`, or `mamba`, cuts that to well under a
+minute. Model weights are a further 3 GB, downloaded on first use.
 
 Model weights download automatically from
 [Wangwpi/PALM](https://huggingface.co/Wangwpi/PALM) on first use, or in advance:
@@ -57,6 +70,24 @@ and site InterPro classes with their probabilities, and the top-`k` classes per
 residue. `result.save(...)` also writes an `.npz` holding the full class
 probability matrices and the PALM residue embeddings.
 
+### InterPro class labels
+
+Each prediction head outputs a probability per InterPro class. The released
+checkpoint carries the accession-to-index maps itself, and
+[`palm/interpro_classes.tsv`](palm/interpro_classes.tsv) ships the full table:
+
+```text
+head    class_index  interpro_id  interpro_type  name
+domain  0            IPR000001    Domain         Kringle
+site    0            IPR000035    Conserved_site Alkylbase DNA glycosidase, conserved site
+```
+
+`class_index` is 0-based and **per head**: domain indices run 0-17950 and site
+indices restart at 0 and run to 1382. PALM reads this table automatically, so
+results come back with readable names (`domain_top_name`,
+and the `name` field inside `top_domain_classes`) without any extra argument.
+Pass `ipr_tsv=` / `--ipr-tsv` only to override it with a different table.
+
 ### Annotate a list of sequences
 
 ```python
@@ -85,9 +116,11 @@ predictor = PALMPredictor("hf://Wangwpi/PALM::palm_soft_target_epoch8.pt")
 ### Command line
 
 ```bash
-# one sequence, or every record in a multi-record FASTA
-python examples/predict_sequence.py --fasta protein.fasta --output-prefix results/protein
+python examples/predict_sequence.py --fasta examples/ubiquitin.fasta --output-prefix results/ubiquitin
 ```
+
+Every record in a multi-record FASTA is annotated. The bundled example returns
+`IPR000626` (ubiquitin-like domain) across all 76 residues.
 
 Useful options: `--sequence` instead of `--fasta`, `--checkpoint-dir`,
 `--checkpoint`, `--top-k`, `--device`, `--local-files-only`, and `--ipr-tsv`

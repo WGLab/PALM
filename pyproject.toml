@@ -29,5 +29,8 @@ docs = [
 [tool.setuptools.packages.find]
 include = ["palm*"]
 
+[tool.setuptools.package-data]
+palm = ["interpro_classes.tsv"]
+
 [tool.ruff]
 line-length = 100

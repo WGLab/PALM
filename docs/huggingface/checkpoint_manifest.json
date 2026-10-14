@@ -13,7 +13,13 @@
   "pathogenicity_ensemble": {
     "split": "random stratified five-fold ClinVar",
     "aggregation": "unweighted arithmetic mean of probabilities",
-    "selected_epochs": [3, 4, 4, 3, 4],
+    "selected_epochs": [
+      3,
+      4,
+      4,
+      3,
+      4
+    ],
     "feature_dim": 329920,
     "files": [
       {
@@ -42,5 +48,12 @@
         "sha256": "d1b9d8f57658171b6c426211570ccc5e24f402bbcc0420bf36ba8206aec5a98f"
       }
     ]
+  },
+  "class_table": {
+    "filename": "interpro_classes.tsv",
+    "description": "One row per output class: head, 0-based per-head class_index, interpro_id, interpro_type, name.",
+    "rows": 19334,
+    "bytes": 1296056,
+    "sha256": "9b10f03c3998141d138a3efbe0ec120defc17412205c787f947cfe956d9474ad"
   }
 }

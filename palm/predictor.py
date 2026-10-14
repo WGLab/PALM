@@ -36,11 +36,31 @@ def mutate_sequence(wt_sequence: str, aa_pos: int, aa_to: str) -> str:
     return sequence[: aa_pos - 1] + aa_to + sequence[aa_pos:]
 
 
+#: Table shipped with the package: one row per output class of each head, giving
+#: the head, the model's 0-based class index, the InterPro accession, its
+#: InterPro type, and its human-readable name. Generated from the released
+#: checkpoint's own ipr2domain / ipr2site maps, so the indices are authoritative.
+BUNDLED_CLASS_TABLE = Path(__file__).with_name("interpro_classes.tsv")
+
+
+def _bundled_names() -> tuple[dict[str, str], dict[str, str]]:
+    """Read InterPro names for both heads from the bundled class table."""
+    domain: dict[str, str] = {}
+    site: dict[str, str] = {}
+    if not BUNDLED_CLASS_TABLE.is_file():
+        return domain, site
+    table = pd.read_csv(BUNDLED_CLASS_TABLE, sep="\t")
+    for row in table.itertuples(index=False):
+        target = domain if str(row.head) == "domain" else site
+        target[str(row.interpro_id)] = str(row.name)
+    return domain, site
+
+
 def _label_information(
     checkpoint: dict[str, object], ipr_tsv: str | Path | None
 ) -> tuple[dict[int, dict[str, str]], dict[int, dict[str, str]]]:
-    domain_names: dict[str, str] = {}
-    site_names: dict[str, str] = {}
+    # Names default to the bundled table; an explicit --ipr-tsv overrides it.
+    domain_names, site_names = _bundled_names()
     if ipr_tsv is not None and Path(ipr_tsv).is_file():
         table = pd.read_csv(ipr_tsv, sep="\t")
         if not {"ipr", "type", "name"}.issubset(table.columns):

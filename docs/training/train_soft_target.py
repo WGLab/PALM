@@ -423,7 +423,7 @@ def main() -> None:
         model.trainable_parameters(), lr=args.learning_rate
     )
     amp = device.type == "cuda" and not args.no_amp
-    scaler = torch.cuda.amp.GradScaler(enabled=amp)
+    scaler = torch.amp.GradScaler("cuda", enabled=amp)
     start_epoch = 1
     if args.resume:
         state = torch.load(args.resume, map_location=device, weights_only=False)
