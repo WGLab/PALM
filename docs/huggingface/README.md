@@ -1,4 +1,6 @@
 ---
+license: mit
+base_model: facebook/esm2_t30_150M_UR50D
 tags:
   - protein-language-model
   - protein-annotation
@@ -90,6 +92,17 @@ separately without loading these heads.
   around the amino-acid change.
 - Cohort filters and transcript aggregation must be reported with benchmark
   results.
+
+## License
+
+Released under the MIT license, the same terms as the GitHub repository
+(`https://github.com/WGLab/PALM`).
+
+PALM is a fine-tune of `facebook/esm2_t30_150M_UR50D`, which is itself MIT
+licensed. The annotation model was trained on UniRef50 sequences labelled with
+InterPro domain and site entries, and the optional pathogenicity heads on
+ClinVar variant classifications; anyone redistributing derived data should
+check the terms of those sources as well.
 
 ## Citation
 
