@@ -13,3 +13,6 @@ __pycache__/
 # Notebooks / results
 .ipynb_checkpoints/
 results/
+
+# Temporary requirements file written by `conda env create` into the CWD.
+condaenv.*.requirements.txt
