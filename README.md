@@ -165,6 +165,10 @@ Everything needed to *run* PALM is in `palm/` and `examples/`. The code used to
 train the model, reproduce the benchmarks, plot annotation tracks, and publish
 weights is kept in [`docs/`](docs/) — see [`docs/README.md`](docs/README.md).
 
+## License
+
+MIT - see [LICENSE](LICENSE).
+
 ## Reference
 
 Citation information will be added when the PALM manuscript is available.
