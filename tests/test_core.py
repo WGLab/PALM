@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import torch
 
 from palm.hub import hf_reference, parse_hf_reference
@@ -38,3 +40,52 @@ def test_hugging_face_reference_round_trip():
         "example/PALM",
         "pathogenicity/fold_1.pt",
     )
+
+
+def test_label_maps_split_repeat_out_of_sites(tmp_path):
+    """Repeat entries must land in their own vocabulary, not in the site head.
+
+    In the four-head release every InterPro type that was not ``Domain`` fell
+    into the site map, which is how 392 Repeat classes ended up in a site
+    vocabulary that never trained on them.
+    """
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "docs"))
+    from training.train_soft_target import load_label_maps
+
+    table = tmp_path / "ipr.tsv"
+    table.write_text(
+        "ipr\ttype\tname\n"
+        "IPR000001\tDomain\tKringle\n"
+        "IPR000002\tRepeat\tArmadillo\n"
+        "IPR000003\tActive_site\tSerine protease\n"
+        "IPR000004\tConserved_site\tSomething conserved\n"
+    )
+    domain, site, repeat = load_label_maps(table)
+    assert list(domain) == ["IPR000001"]
+    assert list(repeat) == ["IPR000002"]
+    assert list(site) == ["IPR000003", "IPR000004"]
+
+
+def test_palm_output_carries_six_tracks():
+    from palm.model import PALMOutput
+
+    assert PALMOutput.__dataclass_fields__.keys() >= {
+        "domain_occurrence_logits",
+        "site_occurrence_logits",
+        "repeat_occurrence_logits",
+        "domain_class_logits",
+        "site_class_logits",
+        "repeat_class_logits",
+    }
+
+
+def test_bundled_class_table_covers_three_heads():
+    import pandas as pd
+
+    from palm.predictor import BUNDLED_CLASS_TABLE
+
+    table = pd.read_csv(BUNDLED_CLASS_TABLE, sep="\t")
+    counts = table.groupby("head").size().to_dict()
+    assert counts == {"domain": 17951, "site": 991, "repeat": 392}

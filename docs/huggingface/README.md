@@ -1,6 +1,4 @@
 ---
-license: mit
-base_model: facebook/esm2_t30_150M_UR50D
 tags:
   - protein-language-model
   - protein-annotation
@@ -12,47 +10,53 @@ library_name: transformers
 pipeline_tag: token-classification
 ---
 
-# PALM soft-target epoch 8
+# PALM (six-head, epoch 3)
 
-This repository contains the final PALM soft-target overlap-aware checkpoint
-and optional ClinVar-trained pathogenicity heads.
+This repository contains the final PALM annotation checkpoint and the
+ClinVar-trained pathogenicity heads that go with it.
 
 ## Files
 
 ```text
-palm_soft_target_epoch8.pt
-pathogenicity/random_split_fold_1.pt
-pathogenicity/random_split_fold_2.pt
-pathogenicity/random_split_fold_3.pt
-pathogenicity/random_split_fold_4.pt
-pathogenicity/random_split_fold_5.pt
-interpro_classes.tsv
+palm_post_ep3_six_head.pt
+pathogenicity/gene_protein_disjoint_fold_1.pt
+pathogenicity/gene_protein_disjoint_fold_2.pt
+pathogenicity/gene_protein_disjoint_fold_3.pt
+pathogenicity/gene_protein_disjoint_fold_4.pt
+pathogenicity/gene_protein_disjoint_fold_5.pt
 checkpoint_manifest.json
 ```
 
-`interpro_classes.tsv` maps every output class to its InterPro entry:
-
-```text
-head    class_index  interpro_id  interpro_type  name
-domain  0            IPR000001    Domain         Kringle
-site    0            IPR000035    Conserved_site Alkylbase DNA glycosidase, conserved site
-```
-
-`class_index` is 0-based and per head: domain indices run 0-17950, and site
-indices restart at 0 and run to 1382. The checkpoint itself carries the same
-accession-to-index maps as `ipr2domain` and `ipr2site`; this file adds the
-human-readable names.
-
-The annotation checkpoint predicts four residue-level outputs:
+The annotation checkpoint predicts six residue-level outputs:
 
 - domain occurrence: none, one, or multiple;
 - site occurrence: none, one, or multiple;
-- InterPro domain classes; and
-- InterPro site classes.
+- repeat occurrence: none, one, or multiple;
+- InterPro domain classes (17,951);
+- InterPro site classes (991); and
+- InterPro repeat classes (392).
 
-Overlapping domain/site labels use uniform soft targets over all true classes.
-The final model uses ESM2-150M, LoRA on the last four ESM layers, learned
+Overlapping labels of the same kind use uniform soft targets over all true
+classes. The model is ESM2-150M with LoRA on the last four ESM layers, learned
 all-layer pooling, and a bidirectional LSTM residue encoder.
+
+## Replaces the four-head release
+
+The previous release published `palm_soft_target_epoch8.pt` and five
+`pathogenicity/random_split_fold_*.pt` heads. Those files have been removed and
+are not interchangeable with these:
+
+- The old model had **four** heads over a 1,383-class site vocabulary. In that
+  vocabulary 409 classes (392 Repeat and 17 PTM) had **no training examples** and
+  could never be predicted, because a data filter had removed them. Repeat is now
+  a trained head of its own and PTM is trained inside the site head, so the site
+  vocabulary is 991 real classes.
+- Pathogenicity features are correspondingly wider: 329,968 dimensions against
+  the old 329,920. An old head cannot be loaded against this checkpoint, and a
+  new head cannot be loaded against the old one.
+
+Code from before this release will not load these files. Update the `palm`
+package to the matching version.
 
 ## Use
 
@@ -63,21 +67,41 @@ artifact reference directly:
 from palm import PALMPredictor
 
 predictor = PALMPredictor(
-    "hf://Wangwpi/PALM::palm_soft_target_epoch8.pt",
+    "hf://Wangwpi/PALM::palm_post_ep3_six_head.pt",
     device="cuda",
 )
 annotation = predictor.annotate("MSEQUENCE...")
 ```
 
-The checkpoint is downloaded from the
-[`Wangwpi/PALM`](https://huggingface.co/Wangwpi/PALM) model repository and
-cached by `huggingface_hub`.
+The returned table carries `domain_*`, `site_*` and `repeat_*` columns, each with
+occurrence probabilities and the top class call.
 
 ## Pathogenicity heads
 
-The five random-split heads were selected at epochs 3, 4, 4, 3, and 4 using
-inner-validation AUROC within a common 15-epoch budget. Their final prediction
-is the unweighted arithmetic mean of the five pathogenicity probabilities.
+Five heads were trained on ClinVar with **gene/protein-disjoint** five-fold
+cross-validation: all variants of a gene, and of any protein sequence shared
+between genes, stay inside one fold, so a head cannot score well by recognising
+a protein it was trained on. PALM itself is frozen; only the heads are trained.
+
+Each fold selected its own epoch by inner-validation AUROC within a five-epoch
+budget, choosing epochs 1, 1, 1, 1 and 2 — the heads converge almost
+immediately. The prediction is the unweighted arithmetic mean of the five
+probabilities.
+
+Pooled out-of-fold performance over 151,823 ClinVar variants: AUROC 0.9229,
+PR-AUC 0.8669.
+
+```python
+from palm import PathogenicityEnsemble
+
+ensemble = PathogenicityEnsemble(
+    "hf://Wangwpi/PALM::palm_post_ep3_six_head.pt",
+    [f"hf://Wangwpi/PALM::pathogenicity/gene_protein_disjoint_fold_{i}.pt"
+     for i in range(1, 6)],
+    device="cuda",
+)
+result = ensemble.predict_one(wt_sequence, mutant_sequence, aa_pos)
+```
 
 These are supervised ClinVar-trained models. Their outputs must not be called
 zero-shot. PALM annotation/embedding WT-mutant disruption can be evaluated
@@ -92,17 +116,8 @@ separately without loading these heads.
   around the amino-acid change.
 - Cohort filters and transcript aggregation must be reported with benchmark
   results.
-
-## License
-
-Released under the MIT license, the same terms as the GitHub repository
-(`https://github.com/WGLab/PALM`).
-
-PALM is a fine-tune of `facebook/esm2_t30_150M_UR50D`, which is itself MIT
-licensed. The annotation model was trained on UniRef50 sequences labelled with
-InterPro domain and site entries, and the optional pathogenicity heads on
-ClinVar variant classifications; anyone redistributing derived data should
-check the terms of those sources as well.
+- The repeat head is informative for annotation but weak as a standalone variant
+  signal; it contributes little to the ClinVar pathogenicity ranking on its own.
 
 ## Citation
 

@@ -2,7 +2,7 @@
 
 **PALM** (Protein Annotation with a Language Model) is a residue-level protein
 annotation model built on ESM2-150M with LoRA adapters, a bidirectional LSTM,
-and four prediction heads.
+and six prediction heads.
 
 <img width="1600" height="1000" alt="palm_overview_light" src="https://github.com/user-attachments/assets/feb558aa-0d64-4e3e-ad5c-4223b7d9e2c4" />
 
@@ -10,8 +10,10 @@ Given a protein sequence, PALM predicts for **every residue**:
 
 - whether the residue lies in a domain (none / one / multiple overlapping domains);
 - whether the residue lies in a functional site (none / one / multiple overlapping sites);
-- the InterPro **domain** class probabilities;
-- the InterPro **site** class probabilities.
+- whether the residue lies in a repeat (none / one / multiple overlapping repeats);
+- the InterPro **domain** class probabilities (17,951 classes);
+- the InterPro **site** class probabilities (991 classes);
+- the InterPro **repeat** class probabilities (392 classes).
 
 PALM is overlap-aware: residues covered by several annotations keep the full
 label set instead of being forced into a single top-1 class. It also produces
@@ -109,10 +111,10 @@ for sequence, result in zip(sequences, predictor.annotate_batch(sequences, top_k
 predictor = PALMPredictor(checkpoint_dir="checkpoints")
 
 # a single checkpoint file
-predictor = PALMPredictor("checkpoints/palm_soft_target_epoch8.pt")
+predictor = PALMPredictor("checkpoints/palm_post_ep3_six_head.pt")
 
 # explicit Hugging Face reference (the default)
-predictor = PALMPredictor("hf://Wangwpi/PALM::palm_soft_target_epoch8.pt")
+predictor = PALMPredictor("hf://Wangwpi/PALM::palm_post_ep3_six_head.pt")
 ```
 
 ### Command line

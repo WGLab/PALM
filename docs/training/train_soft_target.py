@@ -71,9 +71,18 @@ def setup_distributed() -> torch.device:
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def load_label_maps(path: Path) -> tuple[dict[str, int], dict[str, int]]:
+def load_label_maps(
+    path: Path,
+) -> tuple[dict[str, int], dict[str, int], dict[str, int]]:
+    """Split the InterPro vocabulary into domain, site and repeat heads.
+
+    Repeat entries used to fall into the site map, where they had no training
+    signal of their own. They are now a head, so ``Repeat`` is routed out
+    before the site default.
+    """
     domain: dict[str, int] = {}
     site: dict[str, int] = {}
+    repeat: dict[str, int] = {}
     with path.open() as handle:
         next(handle, None)
         for line in handle:
@@ -83,12 +92,17 @@ def load_label_maps(path: Path) -> tuple[dict[str, int], dict[str, int]]:
             if len(fields) < 3:
                 raise ValueError(f"Malformed InterPro row: {line[:100]}")
             ipr, annotation_type = fields[:2]
-            target = domain if annotation_type == "Domain" else site
+            if annotation_type == "Domain":
+                target = domain
+            elif annotation_type == "Repeat":
+                target = repeat
+            else:
+                target = site
             if ipr not in target:
                 target[ipr] = len(target)
-    if not domain or not site:
-        raise ValueError(f"Empty domain/site map from {path}")
-    return domain, site
+    if not domain or not site or not repeat:
+        raise ValueError(f"Empty domain/site/repeat map from {path}")
+    return domain, site, repeat
 
 
 def sparse_sets(sets: Sequence[set[int]]) -> tuple[torch.Tensor, torch.Tensor]:
@@ -108,23 +122,37 @@ def residue_labels(
     interpro: str,
     domain_map: dict[str, int],
     site_map: dict[str, int],
-) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    repeat_map: dict[str, int],
+) -> tuple[
+    torch.Tensor, torch.Tensor, torch.Tensor,
+    torch.Tensor, torch.Tensor, torch.Tensor,
+]:
     domains = [set() for _ in range(length)]
     sites = [set() for _ in range(length)]
+    repeats = [set() for _ in range(length)]
     for ipr, start_text, end_text in INTERPRO_PATTERN.findall(interpro):
         start = max(0, int(start_text) - 1)
         end = min(length - 1, int(end_text) - 1)
         if end < start:
             continue
-        target, label_map = (domains, domain_map) if ipr in domain_map else (sites, site_map)
-        if ipr not in label_map:
+        if ipr in domain_map:
+            target, label_map = domains, domain_map
+        elif ipr in repeat_map:
+            target, label_map = repeats, repeat_map
+        elif ipr in site_map:
+            target, label_map = sites, site_map
+        else:
             continue
         label = label_map[ipr]
         for position in range(start, end + 1):
             target[position].add(label)
     domain_sets, domain_occurrence = sparse_sets(domains)
     site_sets, site_occurrence = sparse_sets(sites)
-    return domain_sets, site_sets, domain_occurrence, site_occurrence
+    repeat_sets, repeat_occurrence = sparse_sets(repeats)
+    return (
+        domain_sets, site_sets, repeat_sets,
+        domain_occurrence, site_occurrence, repeat_occurrence,
+    )
 
 
 def stream_fasta(path: str) -> Iterator[tuple[str, str]]:
@@ -152,8 +180,10 @@ class Sample:
     sequence: str
     domain_sets: torch.Tensor
     site_sets: torch.Tensor
+    repeat_sets: torch.Tensor
     domain_occurrence: torch.Tensor
     site_occurrence: torch.Tensor
+    repeat_occurrence: torch.Tensor
 
 
 class FastaShardDataset(IterableDataset):
@@ -162,6 +192,7 @@ class FastaShardDataset(IterableDataset):
         files: Sequence[str],
         domain_map: dict[str, int],
         site_map: dict[str, int],
+        repeat_map: dict[str, int],
         max_len: int,
         drop_unannotated: bool,
         shuffle_files: bool,
@@ -171,6 +202,7 @@ class FastaShardDataset(IterableDataset):
         self.files = list(files)
         self.domain_map = domain_map
         self.site_map = site_map
+        self.repeat_map = repeat_map
         self.max_len = int(max_len)
         self.drop_unannotated = bool(drop_unannotated)
         self.shuffle_files = bool(shuffle_files)
@@ -197,7 +229,11 @@ class FastaShardDataset(IterableDataset):
                 yield Sample(
                     sequence,
                     *residue_labels(
-                        len(sequence), interpro, self.domain_map, self.site_map
+                        len(sequence),
+                        interpro,
+                        self.domain_map,
+                        self.site_map,
+                        self.repeat_map,
                     ),
                 )
 
@@ -216,6 +252,7 @@ def collate(samples: Sequence[Sample]) -> dict[str, object]:
         "sequences": [sample.sequence for sample in samples],
         "domain_sets": pad_sets([sample.domain_sets for sample in samples]),
         "site_sets": pad_sets([sample.site_sets for sample in samples]),
+        "repeat_sets": pad_sets([sample.repeat_sets for sample in samples]),
         "domain_occurrence": pad_sequence(
             [sample.domain_occurrence for sample in samples],
             batch_first=True,
@@ -223,6 +260,11 @@ def collate(samples: Sequence[Sample]) -> dict[str, object]:
         ),
         "site_occurrence": pad_sequence(
             [sample.site_occurrence for sample in samples],
+            batch_first=True,
+            padding_value=-100,
+        ),
+        "repeat_occurrence": pad_sequence(
+            [sample.repeat_occurrence for sample in samples],
             batch_first=True,
             padding_value=-100,
         ),
@@ -250,6 +292,8 @@ def batch_loss(
     site_occurrence = match_length(batch["site_occurrence"], length).to(device)
     domain_sets = match_length(batch["domain_sets"], length).to(device)
     site_sets = match_length(batch["site_sets"], length).to(device)
+    repeat_occurrence = match_length(batch["repeat_occurrence"], length).to(device)
+    repeat_sets = match_length(batch["repeat_sets"], length).to(device)
 
     domain_occurrence_sum = F.cross_entropy(
         output.domain_occurrence_logits.float().reshape(-1, 3),
@@ -263,19 +307,32 @@ def batch_loss(
         ignore_index=-100,
         reduction="sum",
     )
+    repeat_occurrence_sum = F.cross_entropy(
+        output.repeat_occurrence_logits.float().reshape(-1, 3),
+        repeat_occurrence.reshape(-1),
+        ignore_index=-100,
+        reduction="sum",
+    )
     domain_class_sum, domain_count = sparse_uniform_target_loss(
         output.domain_class_logits, domain_sets
     )
     site_class_sum, site_count = sparse_uniform_target_loss(
         output.site_class_logits, site_sets
     )
+    repeat_class_sum, repeat_count = sparse_uniform_target_loss(
+        output.repeat_class_logits, repeat_sets
+    )
     domain_occurrence_count = domain_occurrence.ne(-100).sum()
     site_occurrence_count = site_occurrence.ne(-100).sum()
+    repeat_occurrence_count = repeat_occurrence.ne(-100).sum()
     components = {
         "domain_occurrence": domain_occurrence_sum / domain_occurrence_count.clamp_min(1),
         "site_occurrence": site_occurrence_sum / site_occurrence_count.clamp_min(1),
         "domain_class": domain_class_sum / domain_count.clamp_min(1),
         "site_class": site_class_sum / site_count.clamp_min(1),
+        "repeat_occurrence": repeat_occurrence_sum
+        / repeat_occurrence_count.clamp_min(1),
+        "repeat_class": repeat_class_sum / repeat_count.clamp_min(1),
     }
     loss = sum(weights[key] * value for key, value in components.items())
     return loss, {key: float(value.detach()) for key, value in components.items()}
@@ -324,6 +381,7 @@ def run_epoch(
     batches = 0
     domain_counts = torch.zeros(3, dtype=torch.float64, device=device)
     site_counts = torch.zeros(3, dtype=torch.float64, device=device)
+    repeat_counts = torch.zeros(3, dtype=torch.float64, device=device)
     for step, batch in enumerate(loader, 1):
         with torch.set_grad_enabled(training):
             output = model(batch["sequences"], amp=amp)
@@ -342,17 +400,26 @@ def run_epoch(
         site_counts += occurrence_counts(
             output.site_occurrence_logits, batch["site_occurrence"]
         )
+        repeat_counts += occurrence_counts(
+            output.repeat_occurrence_logits, batch["repeat_occurrence"]
+        )
     if training and batches % accumulation_steps:
         scaler.step(optimizer)
         scaler.update()
         optimizer.zero_grad(set_to_none=True)
     totals = torch.cat(
-        [torch.tensor([loss_sum, batches], device=device), domain_counts, site_counts]
+        [
+            torch.tensor([loss_sum, batches], device=device),
+            domain_counts,
+            site_counts,
+            repeat_counts,
+        ]
     )
     if distributed():
         dist.all_reduce(totals)
     domain_prf = precision_recall_f1(totals[2:5])
     site_prf = precision_recall_f1(totals[5:8])
+    repeat_prf = precision_recall_f1(totals[8:11])
     return {
         "loss": float(totals[0] / totals[1].clamp_min(1)),
         "domain_precision": domain_prf[0],
@@ -361,6 +428,9 @@ def run_epoch(
         "site_precision": site_prf[0],
         "site_recall": site_prf[1],
         "site_f1": site_prf[2],
+        "repeat_precision": repeat_prf[0],
+        "repeat_recall": repeat_prf[1],
+        "repeat_f1": repeat_prf[2],
     }
 
 
@@ -385,6 +455,8 @@ def arguments() -> argparse.Namespace:
     parser.add_argument("--site-occurrence-weight", type=float, default=1.0)
     parser.add_argument("--domain-class-weight", type=float, default=1.0)
     parser.add_argument("--site-class-weight", type=float, default=1.0)
+    parser.add_argument("--repeat-occurrence-weight", type=float, default=1.0)
+    parser.add_argument("--repeat-class-weight", type=float, default=1.0)
     parser.add_argument("--resume", type=Path)
     parser.add_argument("--seed", type=int, default=1234)
     parser.add_argument("--no-amp", action="store_true")
@@ -408,11 +480,12 @@ def main() -> None:
     validation_files = sorted(glob.glob(str(args.val_dir / "*.fasta")))
     if not train_files or not validation_files:
         raise FileNotFoundError("No .fasta shards found in train/validation directory.")
-    domain_map, site_map = load_label_maps(args.ipr_tsv)
+    domain_map, site_map, repeat_map = load_label_maps(args.ipr_tsv)
     model = PALM(
         args.esm_checkpoint,
         len(domain_map),
         len(site_map),
+        len(repeat_map),
         max_len_residues=args.max_len,
         lora_r=args.lora_r,
         lora_alpha=args.lora_alpha,
@@ -444,6 +517,8 @@ def main() -> None:
         "site_occurrence": args.site_occurrence_weight,
         "domain_class": args.domain_class_weight,
         "site_class": args.site_class_weight,
+        "repeat_occurrence": args.repeat_occurrence_weight,
+        "repeat_class": args.repeat_class_weight,
     }
     metadata = {
         "architecture": "overlap_aware_multi_task",
@@ -451,8 +526,10 @@ def main() -> None:
         "specific_class_loss": "uniform_soft_target_cross_entropy",
         "num_domain_classes": len(domain_map),
         "num_site_classes": len(site_map),
+        "num_repeat_classes": len(repeat_map),
         "ipr2domain": domain_map,
         "ipr2site": site_map,
+        "ipr2repeat": repeat_map,
         "esm_checkpoint": args.esm_checkpoint,
         "max_len": args.max_len,
         "use_all_layer_pooling": True,
@@ -465,6 +542,8 @@ def main() -> None:
         "site_instance_weight": args.site_occurrence_weight,
         "domain_class_weight": args.domain_class_weight,
         "site_class_weight": args.site_class_weight,
+        "repeat_instance_weight": args.repeat_occurrence_weight,
+        "repeat_class_weight": args.repeat_class_weight,
     }
     loader_options = {
         "batch_size": args.batch_size,
@@ -474,7 +553,8 @@ def main() -> None:
     }
     log(
         f"training_files={len(train_files)} validation_files={len(validation_files)} "
-        f"domain_classes={len(domain_map)} site_classes={len(site_map)}",
+        f"domain_classes={len(domain_map)} site_classes={len(site_map)} "
+        f"repeat_classes={len(repeat_map)}",
         log_path,
     )
     for epoch in range(start_epoch, args.epochs + 1):
@@ -483,6 +563,7 @@ def main() -> None:
                 files,
                 domain_map,
                 site_map,
+                repeat_map,
                 args.max_len,
                 not args.keep_unannotated,
                 shuffle,

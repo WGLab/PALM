@@ -1,9 +1,11 @@
 """PALM soft-target overlap-aware residue annotation model.
 
-The classes in this module reproduce the architecture stored in the final
-``epoch_8.pt`` checkpoint.  The model has two occurrence heads (none, one, or
-multiple annotations) and two annotation-class heads (InterPro domain and site
-classes).  Overlapping class targets are represented by a uniform probability
+The classes in this module reproduce the architecture stored in the released
+``epoch_3.pt`` six-head checkpoint.  The model has three occurrence heads (none,
+one, or multiple annotations) and three annotation-class heads, for InterPro
+domain, site and repeat classes.  Repeat used to share the site vocabulary,
+where its 392 classes had no training signal; it is now its own head, so a
+four-head checkpoint cannot be loaded here.  Overlapping class targets are represented by a uniform probability
 distribution over every valid class at a residue.
 """
 
@@ -74,12 +76,18 @@ class MLPHead(nn.Module):
         return self.net(x)
 
 
+FINAL_EPOCH = 3
+"""Epoch of the released six-head checkpoint."""
+
+
 @dataclass
 class PALMOutput:
     domain_occurrence_logits: torch.Tensor
     site_occurrence_logits: torch.Tensor
+    repeat_occurrence_logits: torch.Tensor
     domain_class_logits: torch.Tensor
     site_class_logits: torch.Tensor
+    repeat_class_logits: torch.Tensor
     residue_mask: torch.Tensor
     residue_embeddings: torch.Tensor
 
@@ -92,6 +100,7 @@ class PALM(nn.Module):
         esm_checkpoint: str,
         num_domain_classes: int,
         num_site_classes: int,
+        num_repeat_classes: int,
         max_len_residues: int = 4096,
         lstm_hidden_dim: int | None = None,
         lstm_layers: int = 1,
@@ -153,8 +162,10 @@ class PALM(nn.Module):
         output_dim = self.encoder.out_dim
         self.domain_instance_head = MLPHead(output_dim, 3)
         self.site_instance_head = MLPHead(output_dim, 3)
+        self.repeat_instance_head = MLPHead(output_dim, 3)
         self.domain_head = MLPHead(output_dim, int(num_domain_classes))
         self.site_type_head = MLPHead(output_dim, int(num_site_classes))
+        self.repeat_head = MLPHead(output_dim, int(num_repeat_classes))
 
     def _sequence_cap(self) -> int:
         maximum = getattr(self.esm_config, "max_position_embeddings", None)
@@ -203,11 +214,15 @@ class PALM(nn.Module):
             site_occurrence = self.site_instance_head(encoded) * mask.unsqueeze(-1)
             domain_class = self.domain_head(encoded) * mask.unsqueeze(-1)
             site_class = self.site_type_head(encoded) * mask.unsqueeze(-1)
+            repeat_occurrence = self.repeat_instance_head(encoded) * mask.unsqueeze(-1)
+            repeat_class = self.repeat_head(encoded) * mask.unsqueeze(-1)
         return PALMOutput(
             domain_occurrence,
             site_occurrence,
+            repeat_occurrence,
             domain_class,
             site_class,
+            repeat_class,
             mask,
             encoded,
         )
@@ -224,6 +239,7 @@ def model_from_checkpoint(
         esm_checkpoint=str(checkpoint["esm_checkpoint"]),
         num_domain_classes=int(checkpoint["num_domain_classes"]),
         num_site_classes=int(checkpoint["num_site_classes"]),
+        num_repeat_classes=int(checkpoint["num_repeat_classes"]),
         max_len_residues=int(max_len or checkpoint.get("max_len", 4096)),
         lstm_hidden_dim=checkpoint.get("lstm_hidden_dim"),
         lstm_layers=int(checkpoint.get("lstm_layers", 1)),
@@ -246,7 +262,7 @@ def load_model(
     device: str | torch.device = "auto",
     max_len: int | None = None,
     local_files_only: bool = False,
-    require_epoch8: bool = True,
+    require_final_epoch: bool = True,
     checkpoint_dir: str | Path | None = None,
     revision: str | None = None,
     cache_dir: str | Path | None = None,
@@ -271,8 +287,15 @@ def load_model(
         raise ValueError("Checkpoint is not a PALM soft-target overlap-aware checkpoint.")
     if checkpoint.get("specific_class_loss") != "uniform_soft_target_cross_entropy":
         raise ValueError("Checkpoint was not trained with the final uniform soft-target loss.")
-    if require_epoch8 and int(checkpoint.get("epoch", -1)) != 8:
-        raise ValueError(f"Expected epoch 8, found epoch {checkpoint.get('epoch')}.")
+    if require_final_epoch and int(checkpoint.get("epoch", -1)) != FINAL_EPOCH:
+        raise ValueError(
+            f"Expected epoch {FINAL_EPOCH}, found epoch {checkpoint.get('epoch')}."
+        )
+    if "num_repeat_classes" not in checkpoint:
+        raise ValueError(
+            "Checkpoint has no repeat head. This release is the six-head model; "
+            "four-head checkpoints are no longer supported."
+        )
     model = model_from_checkpoint(
         checkpoint, max_len=max_len, local_files_only=local_files_only
     )
