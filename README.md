@@ -4,7 +4,8 @@
 annotation model built on ESM2-150M with LoRA adapters, a bidirectional LSTM,
 and six prediction heads.
 
-<img width="1600" height="1000" alt="palm_overview_light" src="https://github.com/user-attachments/assets/feb558aa-0d64-4e3e-ad5c-4223b7d9e2c4" />
+<img width="1600" height="1040" alt="palm_overview_light" src="https://github.com/user-attachments/assets/c3c61fc4-3605-4ee9-9531-ff4cf35de8bc" />
+
 
 Given a protein sequence, PALM predicts for **every residue**:
 
