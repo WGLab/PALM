@@ -97,13 +97,16 @@ def arguments() -> argparse.Namespace:
 
 
 @torch.inference_mode()
-def evaluate_files(model, checkpoint, domain_map, site_map, files, args, group: str) -> dict:
+def evaluate_files(
+    model, checkpoint, domain_map, site_map, repeat_map, files, args, group: str
+) -> dict:
     if not files:
         raise FileNotFoundError(f"No .fasta files for group {group}")
     dataset = FastaShardDataset(
         files,
         domain_map,
         site_map,
+        repeat_map,
         int(args.max_len or checkpoint["max_len"]),
         not args.keep_unannotated,
         False,
@@ -119,8 +122,10 @@ def evaluate_files(model, checkpoint, domain_map, site_map, files, args, group: 
     )
     domain_occurrence = np.zeros(4, dtype=np.int64)
     site_occurrence = np.zeros(4, dtype=np.int64)
+    repeat_occurrence = np.zeros(4, dtype=np.int64)
     domain_class = np.zeros(2, dtype=np.int64)
     site_class = np.zeros(2, dtype=np.int64)
+    repeat_class = np.zeros(2, dtype=np.int64)
     proteins = 0
     for index, batch in enumerate(loader, 1):
         output = model(batch["sequences"], amp=not args.no_amp)
@@ -131,11 +136,17 @@ def evaluate_files(model, checkpoint, domain_map, site_map, files, args, group: 
         site_occurrence += binary_counts(
             output.site_occurrence_logits, batch["site_occurrence"]
         )
+        repeat_occurrence += binary_counts(
+            output.repeat_occurrence_logits, batch["repeat_occurrence"]
+        )
         domain_class += relaxed_class_counts(
             output.domain_class_logits, batch["domain_sets"]
         )
         site_class += relaxed_class_counts(
             output.site_class_logits, batch["site_sets"]
+        )
+        repeat_class += relaxed_class_counts(
+            output.repeat_class_logits, batch["repeat_sets"]
         )
         if index % 1000 == 0:
             print(f"group={group} evaluated_proteins={proteins:,}", flush=True)
@@ -146,10 +157,16 @@ def evaluate_files(model, checkpoint, domain_map, site_map, files, args, group: 
         "evaluated_proteins": proteins,
         "domain_occurrence": prf(domain_occurrence),
         "site_occurrence": prf(site_occurrence),
+        "repeat_occurrence": prf(repeat_occurrence),
         "domain_class": {
             "relaxed_accuracy": float(domain_class[0] / max(domain_class[1], 1)),
             "correct_annotated_residues": int(domain_class[0]),
             "annotated_residues": int(domain_class[1]),
+        },
+        "repeat_class": {
+            "relaxed_accuracy": float(repeat_class[0] / max(repeat_class[1], 1)),
+            "correct_annotated_residues": int(repeat_class[0]),
+            "annotated_residues": int(repeat_class[1]),
         },
         "site_class": {
             "relaxed_accuracy": float(site_class[0] / max(site_class[1], 1)),
@@ -175,13 +192,20 @@ def main() -> None:
     # the one used during training.
     domain_map = {str(ipr): int(i) for ipr, i in dict(checkpoint["ipr2domain"]).items()}
     site_map = {str(ipr): int(i) for ipr, i in dict(checkpoint["ipr2site"]).items()}
+    repeat_map = {str(ipr): int(i) for ipr, i in dict(checkpoint["ipr2repeat"]).items()}
     if len(domain_map) != int(checkpoint["num_domain_classes"]):
         raise ValueError("Domain class map does not match checkpoint.")
     if len(site_map) != int(checkpoint["num_site_classes"]):
         raise ValueError("Site class map does not match checkpoint.")
+    if len(repeat_map) != int(checkpoint["num_repeat_classes"]):
+        raise ValueError("Repeat class map does not match checkpoint.")
     if args.ipr_tsv is not None:
-        tsv_domain, tsv_site = load_label_maps(args.ipr_tsv)
-        absent = (set(domain_map) - set(tsv_domain)) | (set(site_map) - set(tsv_site))
+        tsv_domain, tsv_site, tsv_repeat = load_label_maps(args.ipr_tsv)
+        absent = (
+            (set(domain_map) - set(tsv_domain))
+            | (set(site_map) - set(tsv_site))
+            | (set(repeat_map) - set(tsv_repeat))
+        )
         if absent:
             raise ValueError(
                 f"{args.ipr_tsv} is missing {len(absent)} InterPro entries present in "
@@ -198,7 +222,9 @@ def main() -> None:
         if not targets:
             raise FileNotFoundError(f"No pid_* directories under {args.pid_groups_dir}")
     results = [
-        evaluate_files(model, checkpoint, domain_map, site_map, files, args, group)
+        evaluate_files(
+            model, checkpoint, domain_map, site_map, repeat_map, files, args, group
+        )
         for group, files in targets
     ]
     payload = results[0] if len(results) == 1 else {"groups": results}
@@ -207,7 +233,14 @@ def main() -> None:
     )
     rows = []
     for metrics in results:
-        for head in ("domain_occurrence", "site_occurrence", "domain_class", "site_class"):
+        for head in (
+            "domain_occurrence",
+            "site_occurrence",
+            "repeat_occurrence",
+            "domain_class",
+            "site_class",
+            "repeat_class",
+        ):
             rows.append({"group": metrics["group"], "head": head, **metrics[head]})
     pd.DataFrame(rows).to_csv(
         args.output_dir / "annotation_metrics.tsv", sep="\t", index=False

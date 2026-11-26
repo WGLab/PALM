@@ -25,11 +25,17 @@ from palm.pathogenicity import crop_around_position
 from palm.predictor import mutate_sequence, normalize_sequence
 
 
+# Six heads. The annotation disruption score is the mean of the six per-head
+# z-scores, so adding repeat changes the score: on ClinVar the repeat head is
+# close to uninformative on its own and pulls the combined annotation AUROC
+# down, while leaving the LLR-combined score neutral-to-better.
 HEADS = (
     "domain_occurrence",
     "site_occurrence",
+    "repeat_occurrence",
     "domain_class",
     "site_class",
+    "repeat_class",
 )
 SUMMARIES = ("mean", "mutation", "local", "max")
 
@@ -78,6 +84,12 @@ def output_arrays(output, index: int) -> dict[str, np.ndarray]:
         ).cpu().numpy(),
         "site_class": torch.softmax(
             output.site_class_logits[index, :length].float(), dim=-1
+        ).cpu().numpy(),
+        "repeat_occurrence": torch.softmax(
+            output.repeat_occurrence_logits[index, :length].float(), dim=-1
+        ).cpu().numpy(),
+        "repeat_class": torch.softmax(
+            output.repeat_class_logits[index, :length].float(), dim=-1
         ).cpu().numpy(),
     }
 

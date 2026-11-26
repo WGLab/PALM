@@ -18,26 +18,33 @@ downloaded weights, as described in the main README.
 
 ## Model details
 
-PALM predicts four outputs at every residue:
+PALM predicts six outputs at every residue:
 
 1. domain occurrence: no domain, one domain, or multiple overlapping domains;
 2. site occurrence: no site, one site, or multiple overlapping sites;
-3. InterPro domain-class probabilities; and
-4. InterPro site-class probabilities.
+3. repeat occurrence: no repeat, one repeat, or multiple overlapping repeats;
+4. InterPro domain-class probabilities (17,951 classes);
+5. InterPro site-class probabilities (991 classes); and
+6. InterPro repeat-class probabilities (392 classes).
 
-For a residue annotated with several domain or site classes, the classification
+InterPro Repeat entries used to sit inside the site vocabulary, where their 392
+classes had no training signal of their own; they are now a separate head, and
+the site vocabulary is 991 real classes (759 conserved sites, 133 active sites,
+82 binding sites, 17 PTM).
+
+For a residue annotated with several domain, site or repeat classes, the classification
 target is uniform over every true class. This avoids selecting an arbitrary
 top-1 label at overlapping residues. The occurrence heads remain three-class
 models during training. For occurrence precision, recall, and F1, classes 1 and
 2 are combined as annotation present and class 0 is annotation absent.
 
-The released model is the soft-target epoch-8 checkpoint. Earlier PALM
+The released model is the six-head epoch-3 checkpoint. Earlier PALM
 multiclass, relaxed-overlap, and epoch-4 checkpoints are deliberately excluded
 from the released repository.
 
 ## Visualization
 
-Create the four-track annotation plot and a separate legend:
+Create the six-track annotation plot and a separate legend:
 
 ```bash
 python docs/visualization/plot_annotation.py \
@@ -73,7 +80,7 @@ cluster path, result table, or unpublished dataset is embedded in the code.
 
 ```bash
 python docs/evaluation/evaluate_annotation.py \
-  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
+  --checkpoint 'hf://Wangwpi/PALM::palm_post_ep3_six_head.pt' \
   --test-dir data/uniref50/test \
   --ipr-tsv data/ipr_domain_sites_entry.tsv \
   --output-dir results/annotation_test
@@ -85,14 +92,14 @@ correct if it belongs to the complete true label set at that residue.
 
 For PID-stratified FASTA subdirectories named `pid_*`, replace `--test-dir`
 with `--pid-groups-dir data/uniref50/test_pid_groups`. The model is loaded once
-and the same four-head metrics are written for every PID bin.
+and the same six-head metrics are written for every PID bin.
 
 ### Zero-shot pathogenicity
 
 ```bash
 python docs/evaluation/zero_shot_pathogenicity.py \
   --input data/variants_with_sequences.tsv \
-  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
+  --checkpoint 'hf://Wangwpi/PALM::palm_post_ep3_six_head.pt' \
   --output-dir results/zero_shot
 ```
 
@@ -118,13 +125,13 @@ preprocessing and must be reported; it is not learned by PALM.
 ```bash
 python docs/evaluation/evaluate_pathogenicity_ensemble.py \
   --input data/variants_with_sequences.tsv \
-  --palm-checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
+  --palm-checkpoint 'hf://Wangwpi/PALM::palm_post_ep3_six_head.pt' \
   --head-checkpoints \
-    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_1.pt' \
-    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_2.pt' \
-    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_3.pt' \
-    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_4.pt' \
-    'hf://Wangwpi/PALM::pathogenicity/random_split_fold_5.pt' \
+    'hf://Wangwpi/PALM::pathogenicity/gene_protein_disjoint_fold_1.pt' \
+    'hf://Wangwpi/PALM::pathogenicity/gene_protein_disjoint_fold_2.pt' \
+    'hf://Wangwpi/PALM::pathogenicity/gene_protein_disjoint_fold_3.pt' \
+    'hf://Wangwpi/PALM::pathogenicity/gene_protein_disjoint_fold_4.pt' \
+    'hf://Wangwpi/PALM::pathogenicity/gene_protein_disjoint_fold_5.pt' \
   --output results/pathogenicity_predictions.tsv
 ```
 
@@ -152,7 +159,7 @@ that same subset.
 ```bash
 python docs/evaluation/reactome_knn.py \
   --input data/reactome_proteins.tsv \
-  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
+  --checkpoint 'hf://Wangwpi/PALM::palm_post_ep3_six_head.pt' \
   --include-esm2 \
   --output-dir results/reactome
 ```
@@ -166,7 +173,7 @@ Embeddings are standardized, and leave-one-out cosine kNN is evaluated at
 ```bash
 python docs/evaluation/flexinr_screen.py \
   --input data/flexinr_paired_variants.tsv \
-  --checkpoint 'hf://Wangwpi/PALM::palm_soft_target_epoch8.pt' \
+  --checkpoint 'hf://Wangwpi/PALM::palm_post_ep3_six_head.pt' \
   --include-esm2 \
   --output-dir results/flexinr
 ```

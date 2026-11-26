@@ -109,6 +109,7 @@ class PairFeatureExtractor(nn.Module):
         palm: PALM,
         num_domain_classes: int,
         num_site_classes: int,
+        num_repeat_classes: int,
         summaries: Sequence[str],
         local_radius: int,
     ) -> None:
@@ -116,7 +117,19 @@ class PairFeatureExtractor(nn.Module):
         self.palm = palm
         self.summaries = parse_summaries(summaries)
         self.local_radius = int(local_radius)
-        single = int(palm.encoder.out_dim) + 3 + int(num_domain_classes) + 3 + int(num_site_classes)
+        # Residue feature block, in the exact order the heads were trained on:
+        # encoder output, domain occurrence, domain class, site occurrence,
+        # site class, repeat occurrence, repeat class. The order is part of the
+        # head weights - permuting it silently produces wrong probabilities.
+        single = (
+            int(palm.encoder.out_dim)
+            + 3
+            + int(num_domain_classes)
+            + 3
+            + int(num_site_classes)
+            + 3
+            + int(num_repeat_classes)
+        )
         self.sequence_feature_dim = len(self.summaries) * single
         self.feature_dim = 4 * self.sequence_feature_dim
 
@@ -159,6 +172,8 @@ class PairFeatureExtractor(nn.Module):
                 torch.softmax(output.domain_class_logits.float(), dim=-1),
                 torch.softmax(output.site_occurrence_logits.float(), dim=-1),
                 torch.softmax(output.site_class_logits.float(), dim=-1),
+                torch.softmax(output.repeat_occurrence_logits.float(), dim=-1),
+                torch.softmax(output.repeat_class_logits.float(), dim=-1),
             ],
             dim=-1,
         )
@@ -232,7 +247,7 @@ class PathogenicityEnsemble:
             device=device,
             max_len=self.max_len,
             local_files_only=local_files_only,
-            require_epoch8=True,
+            require_final_epoch=True,
             checkpoint_dir=checkpoint_dir,
             revision=revision,
             cache_dir=cache_dir,
@@ -244,6 +259,7 @@ class PathogenicityEnsemble:
             palm,
             int(palm_state["num_domain_classes"]),
             int(palm_state["num_site_classes"]),
+            int(palm_state["num_repeat_classes"]),
             self.summaries,
             self.local_radius,
         ).eval()

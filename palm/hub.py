@@ -11,12 +11,12 @@ from huggingface_hub import hf_hub_download
 HF_PREFIX = "hf://"
 CHECKPOINT_DIR_ENV = "PALM_CHECKPOINT_DIR"
 DEFAULT_HF_REPO_ID = "Wangwpi/PALM"
-DEFAULT_ANNOTATION_FILENAME = "palm_soft_target_epoch8.pt"
+DEFAULT_ANNOTATION_FILENAME = "palm_post_ep3_six_head.pt"
 DEFAULT_ANNOTATION_REFERENCE = (
     f"{HF_PREFIX}{DEFAULT_HF_REPO_ID}::{DEFAULT_ANNOTATION_FILENAME}"
 )
 DEFAULT_PATHOGENICITY_HEAD_REFERENCES = tuple(
-    f"{HF_PREFIX}{DEFAULT_HF_REPO_ID}::pathogenicity/random_split_fold_{fold}.pt"
+    f"{HF_PREFIX}{DEFAULT_HF_REPO_ID}::pathogenicity/gene_protein_disjoint_fold_{fold}.pt"
     for fold in range(1, 6)
 )
 

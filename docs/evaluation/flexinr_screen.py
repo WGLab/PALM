@@ -110,6 +110,12 @@ def palm_outputs(model, sequences: Sequence[str], batch_size: int, amp: bool) ->
                 "site_class": torch.softmax(
                     output.site_class_logits[index, :length].float(), dim=-1
                 ).cpu().numpy(),
+                "repeat_occurrence": torch.softmax(
+                    output.repeat_occurrence_logits[index, :length].float(), dim=-1
+                ).cpu().numpy(),
+                "repeat_class": torch.softmax(
+                    output.repeat_class_logits[index, :length].float(), dim=-1
+                ).cpu().numpy(),
             }
     return results
 
@@ -130,8 +136,10 @@ def annotation_matrices(
     head_names = (
         "domain_occurrence",
         "site_occurrence",
+        "repeat_occurrence",
         "domain_class",
         "site_class",
+        "repeat_class",
     )
     rows = []
     for row in frame.itertuples(index=False):

@@ -49,12 +49,15 @@ def assign_color(label: str, taken: set[int]) -> tuple[float, float, float, floa
     return PALETTE[start]
 
 
-def load_result(tsv: Path, npz: Path) -> tuple[pd.DataFrame, dict[str, np.ndarray], dict, dict]:
+def load_result(
+    tsv: Path, npz: Path
+) -> tuple[pd.DataFrame, dict[str, np.ndarray], dict, dict, dict]:
     table = pd.read_csv(tsv, sep="\t")
     arrays = np.load(npz, allow_pickle=False)
     domain_labels = {int(key): value for key, value in json.loads(str(arrays["domain_labels"])).items()}
     site_labels = {int(key): value for key, value in json.loads(str(arrays["site_labels"])).items()}
-    return table, arrays, domain_labels, site_labels
+    repeat_labels = {int(key): value for key, value in json.loads(str(arrays["repeat_labels"])).items()}
+    return table, arrays, domain_labels, site_labels, repeat_labels
 
 
 # A probability of exactly 1.0 drawn with ylim (0, 1) lands on the top spine and
@@ -113,10 +116,12 @@ def main() -> None:
     parser.add_argument("--legend-output", type=Path)
     args = parser.parse_args()
 
-    table, arrays, domain_labels, site_labels = load_result(args.tsv, args.npz)
+    table, arrays, domain_labels, site_labels, repeat_labels = load_result(
+        args.tsv, args.npz
+    )
     positions = table["position"].to_numpy()
     taken: set[int] = set()
-    fig, axes = plt.subplots(4, 1, figsize=(13, 7), sharex=True)
+    fig, axes = plt.subplots(6, 1, figsize=(13, 10.5), sharex=True)
     axes[0].plot(
         positions, table["domain_occurrence_probability"], color="#22543D", linewidth=1.6
     )
@@ -151,7 +156,24 @@ def main() -> None:
         "Site classes",
         taken,
     )
-    axes[3].set_xlabel("Residue position")
+    axes[4].plot(
+        positions, table["repeat_occurrence_probability"], color="#7B3F00", linewidth=1.6
+    )
+    axes[4].set_ylim(OCCURRENCE_YLIM)
+    axes[4].set_yticks(OCCURRENCE_YTICKS)
+    axes[4].set_ylabel("Occurrence")
+    axes[4].set_title("Repeat occurrence", loc="left")
+    repeat_handles = plot_stack(
+        axes[5],
+        positions,
+        arrays["repeat_class_probabilities"],
+        repeat_labels,
+        args.class_threshold,
+        args.max_classes,
+        "Repeat classes",
+        taken,
+    )
+    axes[5].set_xlabel("Residue position")
     fig.suptitle(args.title)
     fig.tight_layout()
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -159,14 +181,16 @@ def main() -> None:
     plt.close(fig)
 
     legend_path = args.legend_output or args.output.with_name(args.output.stem + "_legend" + args.output.suffix)
-    legend_figure = plt.figure(figsize=(8, max(2, 0.25 * (len(domain_handles) + len(site_handles)))))
+    handle_count = len(domain_handles) + len(site_handles) + len(repeat_handles)
+    legend_figure = plt.figure(figsize=(8, max(2, 0.25 * handle_count)))
     legend_figure.legend(
-        domain_handles + site_handles,
+        domain_handles + site_handles + repeat_handles,
         [f"Domain: {item.get_label()}" for item in domain_handles]
-        + [f"Site: {item.get_label()}" for item in site_handles],
+        + [f"Site: {item.get_label()}" for item in site_handles]
+        + [f"Repeat: {item.get_label()}" for item in repeat_handles],
         loc="center",
         frameon=False,
-        ncol=2,
+        ncol=3,
     )
     legend_figure.savefig(legend_path, dpi=300, bbox_inches="tight")
     plt.close(legend_figure)

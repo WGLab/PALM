@@ -43,24 +43,31 @@ def mutate_sequence(wt_sequence: str, aa_pos: int, aa_to: str) -> str:
 BUNDLED_CLASS_TABLE = Path(__file__).with_name("interpro_classes.tsv")
 
 
-def _bundled_names() -> tuple[dict[str, str], dict[str, str]]:
-    """Read InterPro names for both heads from the bundled class table."""
+def _bundled_names() -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
+    """Read InterPro names for all three class heads from the bundled table."""
     domain: dict[str, str] = {}
     site: dict[str, str] = {}
+    repeat: dict[str, str] = {}
     if not BUNDLED_CLASS_TABLE.is_file():
-        return domain, site
+        return domain, site, repeat
     table = pd.read_csv(BUNDLED_CLASS_TABLE, sep="\t")
+    buckets = {"domain": domain, "site": site, "repeat": repeat}
     for row in table.itertuples(index=False):
-        target = domain if str(row.head) == "domain" else site
-        target[str(row.interpro_id)] = str(row.name)
-    return domain, site
+        target = buckets.get(str(row.head))
+        if target is not None:
+            target[str(row.interpro_id)] = str(row.name)
+    return domain, site, repeat
 
 
 def _label_information(
     checkpoint: dict[str, object], ipr_tsv: str | Path | None
-) -> tuple[dict[int, dict[str, str]], dict[int, dict[str, str]]]:
+) -> tuple[
+    dict[int, dict[str, str]],
+    dict[int, dict[str, str]],
+    dict[int, dict[str, str]],
+]:
     # Names default to the bundled table; an explicit --ipr-tsv overrides it.
-    domain_names, site_names = _bundled_names()
+    domain_names, site_names, repeat_names = _bundled_names()
     if ipr_tsv is not None and Path(ipr_tsv).is_file():
         table = pd.read_csv(ipr_tsv, sep="\t")
         if not {"ipr", "type", "name"}.issubset(table.columns):
@@ -71,7 +78,14 @@ def _label_information(
             ipr = str(getattr(row, "ipr"))
             annotation_type = str(getattr(row, "type"))
             name = str(getattr(row, "name"))
-            (domain_names if annotation_type == "Domain" else site_names)[ipr] = name
+            # InterPro "Repeat" entries are their own head in the six-head
+            # model; everything that is neither Domain nor Repeat is a site.
+            if annotation_type == "Domain":
+                domain_names[ipr] = name
+            elif annotation_type == "Repeat":
+                repeat_names[ipr] = name
+            else:
+                site_names[ipr] = name
     domain = {
         int(index): {
             "ipr": str(ipr),
@@ -88,7 +102,15 @@ def _label_information(
         }
         for ipr, index in dict(checkpoint["ipr2site"]).items()
     }
-    return domain, site
+    repeat = {
+        int(index): {
+            "ipr": str(ipr),
+            "name": repeat_names.get(str(ipr), str(ipr)),
+            "type": "Repeat",
+        }
+        for ipr, index in dict(checkpoint["ipr2repeat"]).items()
+    }
+    return domain, site, repeat
 
 
 @dataclass
@@ -97,9 +119,11 @@ class AnnotationResult:
     table: pd.DataFrame
     domain_class_probabilities: np.ndarray
     site_class_probabilities: np.ndarray
+    repeat_class_probabilities: np.ndarray
     residue_embeddings: np.ndarray
     domain_labels: dict[int, dict[str, str]]
     site_labels: dict[int, dict[str, str]]
+    repeat_labels: dict[int, dict[str, str]]
 
     @property
     def predicted_length(self) -> int:
@@ -117,9 +141,11 @@ class AnnotationResult:
             sequence=np.asarray(self.sequence),
             domain_class_probabilities=self.domain_class_probabilities,
             site_class_probabilities=self.site_class_probabilities,
+            repeat_class_probabilities=self.repeat_class_probabilities,
             residue_embeddings=self.residue_embeddings,
             domain_labels=np.asarray(json.dumps(self.domain_labels)),
             site_labels=np.asarray(json.dumps(self.site_labels)),
+            repeat_labels=np.asarray(json.dumps(self.repeat_labels)),
         )
         return tsv_path, npz_path
 
@@ -146,14 +172,18 @@ class PALMPredictor:
             device=device,
             max_len=max_len,
             local_files_only=local_files_only,
-            require_epoch8=True,
+            require_final_epoch=True,
             checkpoint_dir=checkpoint_dir,
             revision=revision,
             cache_dir=cache_dir,
             token=token,
         )
         self.amp = bool(amp)
-        self.domain_labels, self.site_labels = _label_information(
+        (
+            self.domain_labels,
+            self.site_labels,
+            self.repeat_labels,
+        ) = _label_information(
             self.checkpoint, ipr_tsv
         )
 
@@ -203,8 +233,15 @@ class PALMPredictor:
         site_class = torch.softmax(
             output.site_class_logits[batch_index, :length].float(), dim=-1
         ).cpu().numpy()
+        repeat_occurrence = torch.softmax(
+            output.repeat_occurrence_logits[batch_index, :length].float(), dim=-1
+        ).cpu().numpy()
+        repeat_class = torch.softmax(
+            output.repeat_class_logits[batch_index, :length].float(), dim=-1
+        ).cpu().numpy()
         domain_id = domain_class.argmax(axis=1)
         site_id = site_class.argmax(axis=1)
+        repeat_id = repeat_class.argmax(axis=1)
         table = pd.DataFrame(
             {
                 "position": np.arange(1, length + 1),
@@ -227,10 +264,22 @@ class PALMPredictor:
                 "site_top_ipr": [self.site_labels[int(i)]["ipr"] for i in site_id],
                 "site_top_name": [self.site_labels[int(i)]["name"] for i in site_id],
                 "site_top_probability": site_class.max(axis=1),
+                "repeat_occurrence_probability": repeat_occurrence[:, 1:].sum(axis=1),
+                "repeat_none_probability": repeat_occurrence[:, 0],
+                "repeat_single_probability": repeat_occurrence[:, 1],
+                "repeat_multiple_probability": repeat_occurrence[:, 2],
+                "repeat_occurrence_class": repeat_occurrence.argmax(axis=1),
+                "repeat_top_class_id": repeat_id,
+                "repeat_top_ipr": [self.repeat_labels[int(i)]["ipr"] for i in repeat_id],
+                "repeat_top_name": [self.repeat_labels[int(i)]["name"] for i in repeat_id],
+                "repeat_top_probability": repeat_class.max(axis=1),
             }
         )
         table["top_domain_classes"] = self._top_classes(
             domain_class, self.domain_labels, top_k
+        )
+        table["top_repeat_classes"] = self._top_classes(
+            repeat_class, self.repeat_labels, top_k
         )
         table["top_site_classes"] = self._top_classes(
             site_class, self.site_labels, top_k
@@ -240,11 +289,13 @@ class PALMPredictor:
             table=table,
             domain_class_probabilities=domain_class,
             site_class_probabilities=site_class,
+            repeat_class_probabilities=repeat_class,
             residue_embeddings=output.residue_embeddings[
                 batch_index, :length
             ].float().cpu().numpy(),
             domain_labels=self.domain_labels,
             site_labels=self.site_labels,
+            repeat_labels=self.repeat_labels,
         )
 
     @torch.inference_mode()

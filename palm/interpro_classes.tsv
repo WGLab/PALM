@@ -17950,6 +17950,398 @@ domain	17947	IPR059242	Domain	Small ribosomal subunit protein mS23, conserved do
 domain	17948	IPR059249	Domain	BRSK1/2-like, KA1 domain
 domain	17949	IPR059257	Domain	Spike protein P1, second jelly-roll domain
 domain	17950	IPR059259	Domain	HetR, N-terminal domain
+repeat	0	IPR000033	Repeat	LDLR class B repeat
+repeat	1	IPR000102	Repeat	Neuraxin/MAP1B repeat
+repeat	2	IPR000225	Repeat	Armadillo
+repeat	3	IPR000258	Repeat	Bacterial ice-nucleation, octamer repeat
+repeat	4	IPR000354	Repeat	Involucrin repeat
+repeat	5	IPR000357	Repeat	HEAT repeat
+repeat	6	IPR000408	Repeat	Regulator of chromosome condensation, RCC1
+repeat	7	IPR000420	Repeat	Cell wall mannoprotein PIR repeat
+repeat	8	IPR000479	Repeat	Cation-independent mannose-6-phosphate receptor repeat
+repeat	9	IPR000547	Repeat	Clathrin, heavy chain/VPS, 7-fold repeat
+repeat	10	IPR000557	Repeat	Calponin repeat
+repeat	11	IPR000684	Repeat	RNA polymerase II, heptapeptide repeat, eukaryotic
+repeat	12	IPR000884	Repeat	Thrombospondin type-1 (TSP1) repeat
+repeat	13	IPR000900	Repeat	Nebulin repeat
+repeat	14	IPR000939	Repeat	Adenoviral fibre protein, repeat/shaft region
+repeat	15	IPR001084	Repeat	Microtubule associated protein, tubulin-binding repeat
+repeat	16	IPR001101	Repeat	Plectin repeat
+repeat	17	IPR001258	Repeat	NHL repeat
+repeat	18	IPR001259	Repeat	Proteinase inhibitor I27, calpastatin
+repeat	19	IPR001298	Repeat	Filamin/ABP280 repeat
+repeat	20	IPR001313	Repeat	Pumilio RNA-binding repeat
+repeat	21	IPR001343	Repeat	RTX calcium-binding nonapeptide repeat
+repeat	22	IPR001370	Repeat	BIR repeat
+repeat	23	IPR001389	Repeat	Flocculin
+repeat	24	IPR001443	Repeat	Staphylocoagulase repeat
+repeat	25	IPR001451	Repeat	Hexapeptide repeat
+repeat	26	IPR001610	Repeat	PAC motif
+repeat	27	IPR001611	Repeat	Leucine-rich repeat
+repeat	28	IPR001646	Repeat	Pentapeptide repeat
+repeat	29	IPR001673	Repeat	Dictyostelium repeat
+repeat	30	IPR001680	Repeat	WD40 repeat
+repeat	31	IPR001893	Repeat	Cysteine-rich Golgi apparatus protein 1 repeat
+repeat	32	IPR002003	Repeat	Gas vesicle protein GvpC
+repeat	33	IPR002015	Repeat	Proteasome/cyclosome repeat
+repeat	34	IPR002017	Repeat	Spectrin repeat
+repeat	35	IPR002088	Repeat	Protein prenyltransferase, alpha subunit
+repeat	36	IPR002093	Repeat	BRCA2 repeat
+repeat	37	IPR002098	Repeat	Seminal vesicle protein I
+repeat	38	IPR002105	Repeat	Dockerin type I repeat
+repeat	39	IPR002110	Repeat	Ankyrin repeat
+repeat	40	IPR002134	Repeat	Histidine-rich calcium-binding repeat
+repeat	41	IPR002165	Repeat	Plexin repeat
+repeat	42	IPR002172	Repeat	Low-density lipoprotein (LDL) receptor class A repeat
+repeat	43	IPR002499	Repeat	Major vault protein, N-terminal
+repeat	44	IPR002515	Repeat	Zinc finger, C2H2C-type
+repeat	45	IPR002603	Repeat	ET repeat
+repeat	46	IPR002860	Repeat	BNR repeat
+repeat	47	IPR002885	Repeat	Pentatricopeptide repeat
+repeat	48	IPR002895	Repeat	Paramecium surface antigen
+repeat	49	IPR002989	Repeat	Mycobacterial pentapeptide repeat
+repeat	50	IPR003107	Repeat	HAT (Half-A-TPR) repeat
+repeat	51	IPR003110	Repeat	Phosphorylated immunoreceptor signalling ITAM
+repeat	52	IPR003134	Repeat	Hs1/Cortactin
+repeat	53	IPR003147	Repeat	Protein L, Ig light chain-binding
+repeat	54	IPR003341	Repeat	Cysteine rich repeat, tripleX
+repeat	55	IPR003345	Repeat	M protein repeat
+repeat	56	IPR003367	Repeat	Thrombospondin, type 3-like repeat
+repeat	57	IPR003368	Repeat	Polymorphic outer membrane protein repeat
+repeat	58	IPR003409	Repeat	MORN repeat
+repeat	59	IPR003460	Repeat	Insect antifreeze protein motif
+repeat	60	IPR003591	Repeat	Leucine-rich repeat, typical subtype
+repeat	61	IPR003647	Repeat	Intron encoded nuclease repeat
+repeat	62	IPR003681	Repeat	Glycophorin-binding protein
+repeat	63	IPR003822	Repeat	Paired amphipathic helix
+repeat	64	IPR003900	Repeat	KID repeat
+repeat	65	IPR004018	Repeat	RPEL repeat
+repeat	66	IPR004092	Repeat	Mbt repeat
+repeat	67	IPR004153	Repeat	CXCXC repeat
+repeat	68	IPR004155	Repeat	PBS lyase HEAT-like repeat
+repeat	69	IPR004168	Repeat	PPAK motif
+repeat	70	IPR004212	Repeat	GTF2I-like repeat
+repeat	71	IPR004237	Repeat	Fibronectin binding repeat
+repeat	72	IPR004296	Repeat	DUF236 repeat
+repeat	73	IPR004316	Repeat	Sugar transporter SWEET repeat
+repeat	74	IPR004828	Repeat	Apidaecin
+repeat	75	IPR004830	Repeat	Leucine rich repeat variant
+repeat	76	IPR005003	Repeat	Bacteriophage lambda, Tail fiber protein, repeat-1
+repeat	77	IPR005038	Repeat	Octapeptide repeat
+repeat	78	IPR005042	Repeat	TAL effector repeat
+repeat	79	IPR005068	Repeat	Bacteriophage lambda, Tail fiber protein, repeat-2
+repeat	80	IPR005213	Repeat	HGWP repeat
+repeat	81	IPR005297	Repeat	Lipoprotein repeat
+repeat	82	IPR005325	Repeat	Protein of unknown function DUF308, membrane
+repeat	83	IPR005328	Repeat	Sic protein repeat
+repeat	84	IPR005492	Repeat	Leucine-rich glioma-inactivated , EPTP repeat
+repeat	85	IPR005506	Repeat	Protein of unknown function DUF312, ALF
+repeat	86	IPR005529	Repeat	Protein of unknown function DUF321
+repeat	87	IPR005560	Repeat	Uncharacterized cysteine-rich protein YhjQ/Copper storage protein-like
+repeat	88	IPR006031	Repeat	XYPPX repeat
+repeat	89	IPR006150	Repeat	Cysteine-rich repeat
+repeat	90	IPR006212	Repeat	Furin-like repeat
+repeat	91	IPR006270	Repeat	Streptococcal histidine triad repeat
+repeat	92	IPR006489	Repeat	Plasmodium yoelii repeat of length 46
+repeat	93	IPR006530	Repeat	YD repeat
+repeat	94	IPR006553	Repeat	Leucine-rich repeat, cysteine-containing subtype
+repeat	95	IPR006597	Repeat	Sel1-like repeat
+repeat	96	IPR006603	Repeat	PQ-loop repeat
+repeat	97	IPR006607	Repeat	LARP1-like, DM15 repeat
+repeat	98	IPR006616	Repeat	DM9 repeat
+repeat	99	IPR006623	Repeat	Testicular haploid expressed repeat
+repeat	100	IPR006624	Repeat	Beta-propeller repeat TECPR
+repeat	101	IPR006626	Repeat	Parallel beta-helix repeat
+repeat	102	IPR006627	Repeat	TDU repeat
+repeat	103	IPR006637	Repeat	Clostridial hydrophobic repeat
+repeat	104	IPR006652	Repeat	Kelch repeat type 1
+repeat	105	IPR006691	Repeat	DNA gyrase/topoisomerase IV, subunit A, C-terminal repeat
+repeat	106	IPR006718	Repeat	Dec-1 repeat
+repeat	107	IPR006742	Repeat	Mating factor alpha, C-terminal repeat
+repeat	108	IPR006763	Repeat	Antigen 332 repeat
+repeat	109	IPR006770	Repeat	Opioid growth factor receptor, disordered repeat
+repeat	110	IPR006864	Repeat	LMP repeat
+repeat	111	IPR006891	Repeat	Type III secretion protein EspF
+repeat	112	IPR006970	Repeat	PT repeat
+repeat	113	IPR007132	Repeat	Protein of unknown function DUF346
+repeat	114	IPR007136	Repeat	Protein of unknown function DUF347
+repeat	115	IPR007139	Repeat	Protein of unknown function DUF349
+repeat	116	IPR007140	Repeat	Protein of unknown function DUF350
+repeat	117	IPR007253	Repeat	Cell wall binding repeat 2
+repeat	118	IPR007480	Repeat	Protein of unknown function DUF529
+repeat	119	IPR007596	Repeat	Viral A-type inclusion protein repeat
+repeat	120	IPR007713	Repeat	TMP repeat
+repeat	121	IPR008160	Repeat	Collagen triple helix repeat
+repeat	122	IPR008164	Repeat	Repeat of unknown function XGLTT
+repeat	123	IPR008440	Repeat	Agglutinin-like protein repeat
+repeat	124	IPR008615	Repeat	FNIP
+repeat	125	IPR008619	Repeat	Filamentous haemagglutinin repeat
+repeat	126	IPR008627	Repeat	GETHR pentapeptide repeat
+repeat	127	IPR008727	Repeat	PAAR motif
+repeat	128	IPR008850	Repeat	TEP1, N-terminal
+repeat	129	IPR008910	Repeat	Mechanosensitive ion channel, conserved TM helix
+repeat	130	IPR009039	Repeat	EAR
+repeat	131	IPR009223	Repeat	Adenomatous polyposis coli protein repeat
+repeat	132	IPR009224	Repeat	SAMP
+repeat	133	IPR009240	Repeat	Adenomatous polyposis coli protein, 15 residue repeat
+repeat	134	IPR009271	Repeat	Coagulation factor V, LSPD
+repeat	135	IPR009306	Repeat	Protein of unknown function DUF963
+repeat	136	IPR009484	Repeat	Protein of unknown function DUF1103
+repeat	137	IPR009557	Repeat	Repeat of unknown function DUF1174
+repeat	138	IPR009578	Repeat	Cell surface antigen I/II A repeat
+repeat	139	IPR009603	Repeat	Microtubule associated protein Futsch
+repeat	140	IPR009742	Repeat	Curlin associated
+repeat	141	IPR009745	Repeat	Cysteine-rich, acidic integral membrane
+repeat	142	IPR009761	Repeat	Cytoplasmic repetitive antigen-like
+repeat	143	IPR009765	Repeat	Pericardin-like repeat
+repeat	144	IPR009805	Repeat	Variable length PCR target
+repeat	145	IPR009900	Repeat	Apopolysialoglycoprotein
+repeat	146	IPR010069	Repeat	Toxin CdiA-like, Filamentous hemagglutinin motif repeats
+repeat	147	IPR010176	Repeat	CxxxxCH...CXXCH motif, Geobacter sulfurreducens
+repeat	148	IPR010214	Repeat	Transcription termination factor NusA, C-terminal duplication
+repeat	149	IPR010494	Repeat	Repeat of unknown function DUF1079
+repeat	150	IPR010568	Repeat	Chlorovirus glycoprotein repeat
+repeat	151	IPR010609	Repeat	Gp5, C-terminal
+repeat	152	IPR010620	Repeat	Seven Bladed Beta Propeller repeat
+repeat	153	IPR010736	Repeat	Sperm-tail PG-rich repeat
+repeat	154	IPR010790	Repeat	Repeat of unknown function DUF1388
+repeat	155	IPR010853	Repeat	DC-EC
+repeat	156	IPR010867	Repeat	NPR nonapeptide
+repeat	157	IPR010871	Repeat	Protein of unknown function DUF1502
+repeat	158	IPR011110	Repeat	Two component regulator propeller
+repeat	159	IPR011498	Repeat	Kelch repeat type 2
+repeat	160	IPR011509	Repeat	RtxA toxin
+repeat	161	IPR011521	Repeat	YTV
+repeat	162	IPR011652	Repeat	MORN variant
+repeat	163	IPR011659	Repeat	WD40-like beta-propeller
+repeat	164	IPR011690	Repeat	Phosphate-starvation-induced PsiF repeat
+repeat	165	IPR011713	Repeat	Leucine-rich repeat 3
+repeat	166	IPR011714	Repeat	Seven residue repeat
+repeat	167	IPR011716	Repeat	Tetratricopeptide TPR-3
+repeat	168	IPR011717	Repeat	Tetratricopeptide TPR-4
+repeat	169	IPR011736	Repeat	Ehrlichia tandem repeat
+repeat	170	IPR011801	Repeat	Cyanobacterial long protein repeat
+repeat	171	IPR011889	Repeat	Bacterial surface protein 26-residue repeat
+repeat	172	IPR011936	Repeat	Myxococcus cysteine-rich repeat
+repeat	173	IPR011964	Repeat	YVTN beta-propeller repeat
+repeat	174	IPR012418	Repeat	CAP160
+repeat	175	IPR012488	Repeat	Nodule-specific GRP-repeat
+repeat	176	IPR012510	Repeat	Actin-binding, Xin repeat
+repeat	177	IPR012568	Repeat	KI67R
+repeat	178	IPR012586	Repeat	28S rRNA (cytosine-C(5))-methyltransferase repeat
+repeat	179	IPR012587	Repeat	RNA helicase p68 repeat
+repeat	180	IPR012598	Repeat	Plasmodium-MYXSPDY
+repeat	181	IPR012706	Repeat	Rib/alpha/Esp surface antigen repeat
+repeat	182	IPR013101	Repeat	Phosphate response ubiquitin E3 ligase 1-like, LRR
+repeat	183	IPR013105	Repeat	Tetratricopeptide repeat 2
+repeat	184	IPR013207	Repeat	LGFP
+repeat	185	IPR013211	Repeat	LVIVD
+repeat	186	IPR013378	Repeat	Internalin B-like, B-repeat
+repeat	187	IPR013425	Repeat	Autotransporter-associated beta strand repeat
+repeat	188	IPR013431	Repeat	Delta-60 repeat
+repeat	189	IPR013517	Repeat	FG-GAP repeat
+repeat	190	IPR013519	Repeat	Integrin alpha beta-propellor
+repeat	191	IPR013688	Repeat	GBS Bsp-like
+repeat	192	IPR014262	Repeat	HAF repeat
+repeat	193	IPR015129	Repeat	Titin, Z repeat
+repeat	194	IPR015792	Repeat	Kinesin light chain repeat
+repeat	195	IPR017845	Repeat	Chlorosome envelope protein H, CsmH
+repeat	196	IPR017868	Repeat	Filamin/ABP280 repeat-like
+repeat	197	IPR017873	Repeat	Cysteine-rich Golgi apparatus protein 1 repeat, eukaryote
+repeat	198	IPR017897	Repeat	Thrombospondin, type 3 repeat
+repeat	199	IPR018108	Repeat	Mitochondrial carrier protein, transmembrane region
+repeat	200	IPR018159	Repeat	Spectrin/alpha-actinin
+repeat	201	IPR018185	Repeat	Gas vesicle C repeat
+repeat	202	IPR018337	Repeat	Cell wall/choline-binding repeat
+repeat	203	IPR018391	Repeat	Pyrrolo-quinoline quinone beta-propeller repeat
+repeat	204	IPR018487	Repeat	Hemopexin-like repeats
+repeat	205	IPR018502	Repeat	Annexin repeat
+repeat	206	IPR018803	Repeat	Ish1/Msc1-like
+repeat	207	IPR018942	Repeat	Seminal vesicle protein repeat
+repeat	208	IPR018975	Repeat	Pseudomurein-binding repeat
+repeat	209	IPR019541	Repeat	Trappin protein transglutaminase-binding repeat
+repeat	210	IPR019552	Repeat	Histidine-rich calcium-binding
+repeat	211	IPR019562	Repeat	Micronemal adhesive repeat, sialic-acid binding
+repeat	212	IPR019626	Repeat	Stress-induced protein, KGG, repeat
+repeat	213	IPR019734	Repeat	Tetratricopeptide repeat
+repeat	214	IPR020472	Repeat	PAC1/LIS1-like, WD-40 repeat
+repeat	215	IPR020949	Repeat	Prion, copper binding octapeptide repeat region
+repeat	216	IPR021021	Repeat	Fibronectin-binding repeat, SSURE
+repeat	217	IPR021133	Repeat	HEAT, type 2
+repeat	218	IPR021655	Repeat	Putative metal-binding motif
+repeat	219	IPR021839	Repeat	Early growth response protein 1, C-terminal
+repeat	220	IPR021984	Repeat	Plasmodium repeat
+repeat	221	IPR022124	Repeat	Protein of unknown function DUF3659
+repeat	222	IPR022365	Repeat	Clathrin, heavy chain, propeller repeat
+repeat	223	IPR022435	Repeat	Surface-anchored repeat, actinobacteria
+repeat	224	IPR022441	Repeat	Parallel beta-helix repeat-2
+repeat	225	IPR022444	Repeat	Cofactor-binding repeat, putative
+repeat	226	IPR022519	Repeat	Gloeobacter/Verrucomicrobia repeat
+repeat	227	IPR023908	Repeat	xxxLxxG heptad repeat
+repeat	228	IPR024446	Repeat	PXPV repeat
+repeat	229	IPR024447	Repeat	YXWGXW repeat
+repeat	230	IPR024613	Repeat	Huntingtin, N-terminal, HEAT repeats 2
+repeat	231	IPR025157	Repeat	Hemagglutinin repeat
+repeat	232	IPR025574	Repeat	Nucleoporin FG repeat
+repeat	233	IPR025589	Repeat	Topoisomerase C-terminal repeat
+repeat	234	IPR025667	Repeat	SprB repeat
+repeat	235	IPR025875	Repeat	Leucine rich repeat 4
+repeat	236	IPR025900	Repeat	Nuclear receptor repeat
+repeat	237	IPR025928	Repeat	Flocculin type 3 repeat
+repeat	238	IPR026003	Repeat	HEAT repeat associated with sister chromatid cohesion protein
+repeat	239	IPR026393	Repeat	Modification target Cys-rich repeat
+repeat	240	IPR026394	Repeat	Streptococcal surface-anchored protein repeat
+repeat	241	IPR026435	Repeat	Cys-rich repeat, Myxococcales-type
+repeat	242	IPR026471	Repeat	Zinc metalloproteinase 18-residue repeat
+repeat	243	IPR026876	Repeat	Fn3 associated repeat
+repeat	244	IPR026906	Repeat	BspA-type LRR region
+repeat	245	IPR027578	Repeat	Proline-rich tail region repeat
+repeat	246	IPR027579	Repeat	Surface protein repeat SSSPR-51
+repeat	247	IPR027606	Repeat	Surface protein repeat Ser-Ala-175
+repeat	248	IPR027618	Repeat	Beta-propeller repeat, Msarc-type
+repeat	249	IPR027636	Repeat	Glucan-binding repeat
+repeat	250	IPR028058	Repeat	Fis1, N-terminal tetratricopeptide repeat
+repeat	251	IPR028059	Repeat	Putative flagellar system-associated repeat
+repeat	252	IPR028061	Repeat	Fis1, C-terminal tetratricopeptide repeat
+repeat	253	IPR028150	Repeat	Lustrin, cysteine-rich repeated
+repeat	254	IPR028229	Repeat	Integrase repeat unit
+repeat	255	IPR029285	Repeat	CagY type 1 repeat
+repeat	256	IPR029317	Repeat	KRBA1 family repeat
+repeat	257	IPR030895	Repeat	T5SS/PEP-CTERM-associated repeat
+repeat	258	IPR030916	Repeat	ELWxxDGT repeat
+repeat	259	IPR030930	Repeat	Adhesin of bacterial autotransporter system
+repeat	260	IPR031325	Repeat	RHS repeat
+repeat	261	IPR031545	Repeat	Signal recognition particle subunit SRP72, TPR-like repeat
+repeat	262	IPR031573	Repeat	GPI-anchored cell wall protein repeat
+repeat	263	IPR032413	Repeat	Atypical Arm repeat
+repeat	264	IPR032774	Repeat	WG containing repeat
+repeat	265	IPR039005	Repeat	CSPG repeat
+repeat	266	IPR040485	Repeat	Exportin-1, repeat 3
+repeat	267	IPR040520	Repeat	Importin 13 repeat
+repeat	268	IPR040526	Repeat	Inulin fructotransferase, beta helix repeat
+repeat	269	IPR040630	Repeat	Ubiquitous surface protein adhesin repeat
+repeat	270	IPR040689	Repeat	SUVR5, C2H2-type Zinc finger, 3 repeats
+repeat	271	IPR040709	Repeat	Importin 13, repeat 1
+repeat	272	IPR040730	Repeat	Hexapeptide repeat including loop
+repeat	273	IPR040831	Repeat	YdcK Beta solenoid repeat
+repeat	274	IPR040912	Repeat	Repeat of unknown function DUF5633
+repeat	275	IPR040914	Repeat	PH0542 repeat
+repeat	276	IPR040928	Repeat	Importin repeat
+repeat	277	IPR040931	Repeat	Cadmium carbonic anhydrase repeat
+repeat	278	IPR040944	Repeat	Importin 13 repeat 2
+repeat	279	IPR040962	Repeat	Tetratricopeptide-like repeat
+repeat	280	IPR040972	Repeat	ALMS repeat
+repeat	281	IPR041025	Repeat	Homing endonuclease associated repeat
+repeat	282	IPR041114	Repeat	Nitrous oxide reductase, propeller repeat 1
+repeat	283	IPR041123	Repeat	Chromosome region maintenance repeat
+repeat	284	IPR041142	Repeat	Nitrous oxide reductase, propeller repeat 2
+repeat	285	IPR041209	Repeat	Vesicle tethering protein p115, armadillo tether-repeat
+repeat	286	IPR041235	Repeat	Exportin-1, repeat 2
+repeat	287	IPR041257	Repeat	Adenomatous polyposis coli (APC) repeat
+repeat	288	IPR041274	Repeat	Isopullulanase beta-solenoid repeat
+repeat	289	IPR041281	Repeat	CD180, leucine-rich repeat
+repeat	290	IPR041283	Repeat	Leucine-rich repeat unit
+repeat	291	IPR041302	Repeat	Ribonuclease inhibitor, leucine rich repeat cap
+repeat	292	IPR041303	Repeat	Phage spike trimer 2
+repeat	293	IPR041315	Repeat	PlcR, tetratricopeptide repeat
+repeat	294	IPR041389	Repeat	Importin repeat 6
+repeat	295	IPR041402	Repeat	Dextranase, beta solenoid repeat
+repeat	296	IPR041403	Repeat	DUF4458 domain-containing protein, leucine-rich repeat
+repeat	297	IPR041508	Repeat	Toxin complex C-like repeat
+repeat	298	IPR041653	Repeat	Importin repeat 4
+repeat	299	IPR043631	Repeat	QPE repeat
+repeat	300	IPR043651	Repeat	KNL1 MELT repeat
+repeat	301	IPR043705	Repeat	Plasmodium repeat of length 46
+repeat	302	IPR043709	Repeat	Repeats of unknown function DUF5649
+repeat	303	IPR043710	Repeat	Repeat of unknown function DUF5650
+repeat	304	IPR043822	Repeat	EsV-1-7 cysteine-rich motif
+repeat	305	IPR045395	Repeat	ALTTAQ repeat
+repeat	306	IPR045458	Repeat	Wolframin, Sel1-like repeat
+repeat	307	IPR045571	Repeat	Repeat of unknown function DUF5907
+repeat	308	IPR046776	Repeat	Putative pectate lyase-like adhesive domain
+repeat	309	IPR046805	Repeat	Tra1, HEAT repeat ring region
+repeat	310	IPR046807	Repeat	Tra1, HEAT repeat central region
+repeat	311	IPR046837	Repeat	Laa1/Sip1/HEATR5-like, HEAT repeat region
+repeat	312	IPR046848	Repeat	E motif
+repeat	313	IPR046849	Repeat	E2 motif
+repeat	314	IPR046865	Repeat	Flagellar Assembly Protein A, beta solenoid domain
+repeat	315	IPR046880	Repeat	Tetratricopeptide Repeats-Sensor
+repeat	316	IPR047279	Repeat	Polycomb protein SCMH1, first MBT repeat
+repeat	317	IPR047280	Repeat	Polycomb protein SCMH1, second MBT repeat
+repeat	318	IPR047351	Repeat	Scm-like with four MBT domains protein 1, third MBT repeat
+repeat	319	IPR047352	Repeat	Scm-like with four MBT domains protein 1, second MBT repeat
+repeat	320	IPR047353	Repeat	Scm-like with four MBT domains protein 2, first MBT repeat
+repeat	321	IPR047354	Repeat	Scm-like with four MBT domains protein 2, third MBT repeat
+repeat	322	IPR047355	Repeat	Scm-like with four MBT domains protein 2, fourth MBT repeat
+repeat	323	IPR047356	Repeat	Lethal(3)malignant brain tumor-like protein 2, first MBT repeat
+repeat	324	IPR047357	Repeat	Lethal(3)malignant brain tumor-like protein 2, second MBT repeat
+repeat	325	IPR047358	Repeat	Polycomb protein Sfmbt, first MBT repeat
+repeat	326	IPR047359	Repeat	Polycomb protein Sfmbt, second MBT repeat
+repeat	327	IPR047360	Repeat	Polycomb protein Sfmbt, third MBT repeat
+repeat	328	IPR047361	Repeat	Lethal(3)malignant brain tumor-like protein 1, first MBT repeat
+repeat	329	IPR047362	Repeat	Lethal(3)malignant brain tumor-like protein 1, third MBT repeat
+repeat	330	IPR047589	Repeat	DUF11 repeat
+repeat	331	IPR047881	Repeat	LktA-like tandem repeat
+repeat	332	IPR048407	Repeat	Dumpy, DPY module
+repeat	333	IPR048411	Repeat	Huntingtin, N-terminal, HEAT repeats 1
+repeat	334	IPR048412	Repeat	Huntingtin, bridge
+repeat	335	IPR048413	Repeat	Huntingtin, C-terminal HEAT repeats
+repeat	336	IPR048506	Repeat	LED repeat
+repeat	337	IPR048507	Repeat	WKTW repeat
+repeat	338	IPR048518	Repeat	Ice-binding protein, beta roll
+repeat	339	IPR048568	Repeat	RTX toxin, C-terminal repeat
+repeat	340	IPR048706	Repeat	Cellophane-induced 1 repeat
+repeat	341	IPR048713	Repeat	Choline-binding repeat
+repeat	342	IPR048829	Repeat	Pre-mRNA cleavage complex 2 protein Pcf11, RFEGP repeat
+repeat	343	IPR048893	Repeat	Nuclear pore complex-interacting protein B13-like, MII repeat
+repeat	344	IPR048996	Repeat	PGRS repeats
+repeat	345	IPR049039	Repeat	Regulator of microtubule dynamics protein 1-3, alpha helical repeats
+repeat	346	IPR049147	Repeat	FAM186A, PQQAQ repeat
+repeat	347	IPR049150	Repeat	EFR3 protein, HEAT-like repeat region
+repeat	348	IPR049152	Repeat	EFR3-like, armadillo repeat
+repeat	349	IPR049362	Repeat	TELO2-interacting protein 1, middle region repeats
+repeat	350	IPR049367	Repeat	Testis-expressed protein 13C/D, MVPLGDSxSHS repeat
+repeat	351	IPR049408	Repeat	UV-stimulated scaffold protein A, N-terminal alpha-solenoid repeats
+repeat	352	IPR049419	Repeat	Reelin, subrepeat B
+repeat	353	IPR049451	Repeat	Adhesin AWP2-like, C-terminal YTTT repeat
+repeat	354	IPR049502	Repeat	Suprabasin, GxHH repeat
+repeat	355	IPR049511	Repeat	Polyglycine hydrolase-like, tandem repeat
+repeat	356	IPR049531	Repeat	Antifreeze protein repeat
+repeat	357	IPR049536	Repeat	Properdin, thrombospondin type 1 repeat 0
+repeat	358	IPR049538	Repeat	Plectin-like, spectrin-like repeat
+repeat	359	IPR049547	Repeat	WD repeat-containing protein 93 beta-propeller
+repeat	360	IPR049895	Repeat	Streptococcal M protein, D repeats
+repeat	361	IPR049896	Repeat	Streptococcal M proteins C repeat
+repeat	362	IPR049964	Repeat	Sialidase A repeat
+repeat	363	IPR054014	Repeat	Surface cell antigen Sca2 helical repeat
+repeat	364	IPR054019	Repeat	Properdin, thrombospondin type 1 C-terminal
+repeat	365	IPR054051	Repeat	Mucin-20 repeat
+repeat	366	IPR054283	Repeat	Domain of unknown function (DUF7017)
+repeat	367	IPR054500	Repeat	Phage tail fiber repeat
+repeat	368	IPR055063	Repeat	Small ribosomal subunit protein mS39, PPR
+repeat	369	IPR055358	Repeat	Clathrin heavy-chain repeat
+repeat	370	IPR055530	Repeat	Repeat of unknown function DUF7104
+repeat	371	IPR057148	Repeat	Repeat of unknown function DUF7826
+repeat	372	IPR057221	Repeat	Repeat of unknown function DUF7899
+repeat	373	IPR057233	Repeat	Repeat of unknown function DUF7911
+repeat	374	IPR057236	Repeat	Repeat of unknown function DUF7914
+repeat	375	IPR057308	Repeat	PEP5/VPS11, clathrin heavy-chain repeat
+repeat	376	IPR057361	Repeat	WD repeat-containing protein 35, TPR repeats
+repeat	377	IPR057445	Repeat	ATM-like, TPR repeat
+repeat	378	IPR057466	Repeat	CFAP46, N-terminal TPR repeat
+repeat	379	IPR057481	Repeat	Decapeptide repeat
+repeat	380	IPR057583	Repeat	PYCO1, Rubisco-binding repeat
+repeat	381	IPR057711	Repeat	Repeat of unknown function DUF7951
+repeat	382	IPR057941	Repeat	Transportin-3/Importin-13, second TPR domain
+repeat	383	IPR057942	Repeat	Transportin-3/Importin-13, third TPR domain
+repeat	384	IPR058093	Repeat	LA_2272-like repeat
+repeat	385	IPR058263	Repeat	Repeat of unknown function DUF7957
+repeat	386	IPR058347	Repeat	Repeat of unknown function DUF8034
+repeat	387	IPR058392	Repeat	Repeat of unknown function DUF8079
+repeat	388	IPR058450	Repeat	Repeat of unknown function DUF8137
+repeat	389	IPR058537	Repeat	Transportin-3/Importin-13, fourth TPR domain
+repeat	390	IPR059100	Repeat	Bacterial TSP3 repeat
+repeat	391	IPR059164	Repeat	PRP39, C-terminal HAT repeat
 site	0	IPR000035	Conserved_site	Alkylbase DNA glycosidase, conserved site
 site	1	IPR000047	Conserved_site	Helix-turn-helix motif
 site	2	IPR000049	Conserved_site	Electron transfer flavoprotein, beta-subunit, conserved site
@@ -18924,412 +19316,20 @@ site	970	IPR057662	Binding_site	CEP192, Aurora A binding region
 site	971	IPR057663	Binding_site	TACC3, Aurora-A binding region
 site	972	IPR057664	Binding_site	CEP152, PLK4 binding region
 site	973	IPR057665	Binding_site	CEP192, PLK4 binding region
-site	974	IPR000033	Repeat	LDLR class B repeat
-site	975	IPR000102	Repeat	Neuraxin/MAP1B repeat
-site	976	IPR000225	Repeat	Armadillo
-site	977	IPR000258	Repeat	Bacterial ice-nucleation, octamer repeat
-site	978	IPR000354	Repeat	Involucrin repeat
-site	979	IPR000357	Repeat	HEAT repeat
-site	980	IPR000408	Repeat	Regulator of chromosome condensation, RCC1
-site	981	IPR000420	Repeat	Cell wall mannoprotein PIR repeat
-site	982	IPR000479	Repeat	Cation-independent mannose-6-phosphate receptor repeat
-site	983	IPR000547	Repeat	Clathrin, heavy chain/VPS, 7-fold repeat
-site	984	IPR000557	Repeat	Calponin repeat
-site	985	IPR000684	Repeat	RNA polymerase II, heptapeptide repeat, eukaryotic
-site	986	IPR000884	Repeat	Thrombospondin type-1 (TSP1) repeat
-site	987	IPR000900	Repeat	Nebulin repeat
-site	988	IPR000939	Repeat	Adenoviral fibre protein, repeat/shaft region
-site	989	IPR001084	Repeat	Microtubule associated protein, tubulin-binding repeat
-site	990	IPR001101	Repeat	Plectin repeat
-site	991	IPR001258	Repeat	NHL repeat
-site	992	IPR001259	Repeat	Proteinase inhibitor I27, calpastatin
-site	993	IPR001298	Repeat	Filamin/ABP280 repeat
-site	994	IPR001313	Repeat	Pumilio RNA-binding repeat
-site	995	IPR001343	Repeat	RTX calcium-binding nonapeptide repeat
-site	996	IPR001370	Repeat	BIR repeat
-site	997	IPR001389	Repeat	Flocculin
-site	998	IPR001443	Repeat	Staphylocoagulase repeat
-site	999	IPR001451	Repeat	Hexapeptide repeat
-site	1000	IPR001610	Repeat	PAC motif
-site	1001	IPR001611	Repeat	Leucine-rich repeat
-site	1002	IPR001646	Repeat	Pentapeptide repeat
-site	1003	IPR001673	Repeat	Dictyostelium repeat
-site	1004	IPR001680	Repeat	WD40 repeat
-site	1005	IPR001893	Repeat	Cysteine-rich Golgi apparatus protein 1 repeat
-site	1006	IPR002003	Repeat	Gas vesicle protein GvpC
-site	1007	IPR002015	Repeat	Proteasome/cyclosome repeat
-site	1008	IPR002017	Repeat	Spectrin repeat
-site	1009	IPR002088	Repeat	Protein prenyltransferase, alpha subunit
-site	1010	IPR002093	Repeat	BRCA2 repeat
-site	1011	IPR002098	Repeat	Seminal vesicle protein I
-site	1012	IPR002105	Repeat	Dockerin type I repeat
-site	1013	IPR002110	Repeat	Ankyrin repeat
-site	1014	IPR002134	Repeat	Histidine-rich calcium-binding repeat
-site	1015	IPR002165	Repeat	Plexin repeat
-site	1016	IPR002172	Repeat	Low-density lipoprotein (LDL) receptor class A repeat
-site	1017	IPR002499	Repeat	Major vault protein, N-terminal
-site	1018	IPR002515	Repeat	Zinc finger, C2H2C-type
-site	1019	IPR002603	Repeat	ET repeat
-site	1020	IPR002860	Repeat	BNR repeat
-site	1021	IPR002885	Repeat	Pentatricopeptide repeat
-site	1022	IPR002895	Repeat	Paramecium surface antigen
-site	1023	IPR002989	Repeat	Mycobacterial pentapeptide repeat
-site	1024	IPR003107	Repeat	HAT (Half-A-TPR) repeat
-site	1025	IPR003110	Repeat	Phosphorylated immunoreceptor signalling ITAM
-site	1026	IPR003134	Repeat	Hs1/Cortactin
-site	1027	IPR003147	Repeat	Protein L, Ig light chain-binding
-site	1028	IPR003341	Repeat	Cysteine rich repeat, tripleX
-site	1029	IPR003345	Repeat	M protein repeat
-site	1030	IPR003367	Repeat	Thrombospondin, type 3-like repeat
-site	1031	IPR003368	Repeat	Polymorphic outer membrane protein repeat
-site	1032	IPR003409	Repeat	MORN repeat
-site	1033	IPR003460	Repeat	Insect antifreeze protein motif
-site	1034	IPR003591	Repeat	Leucine-rich repeat, typical subtype
-site	1035	IPR003647	Repeat	Intron encoded nuclease repeat
-site	1036	IPR003681	Repeat	Glycophorin-binding protein
-site	1037	IPR003822	Repeat	Paired amphipathic helix
-site	1038	IPR003900	Repeat	KID repeat
-site	1039	IPR004018	Repeat	RPEL repeat
-site	1040	IPR004092	Repeat	Mbt repeat
-site	1041	IPR004153	Repeat	CXCXC repeat
-site	1042	IPR004155	Repeat	PBS lyase HEAT-like repeat
-site	1043	IPR004168	Repeat	PPAK motif
-site	1044	IPR004212	Repeat	GTF2I-like repeat
-site	1045	IPR004237	Repeat	Fibronectin binding repeat
-site	1046	IPR004296	Repeat	DUF236 repeat
-site	1047	IPR004316	Repeat	Sugar transporter SWEET repeat
-site	1048	IPR004828	Repeat	Apidaecin
-site	1049	IPR004830	Repeat	Leucine rich repeat variant
-site	1050	IPR005003	Repeat	Bacteriophage lambda, Tail fiber protein, repeat-1
-site	1051	IPR005038	Repeat	Octapeptide repeat
-site	1052	IPR005042	Repeat	TAL effector repeat
-site	1053	IPR005068	Repeat	Bacteriophage lambda, Tail fiber protein, repeat-2
-site	1054	IPR005213	Repeat	HGWP repeat
-site	1055	IPR005297	Repeat	Lipoprotein repeat
-site	1056	IPR005325	Repeat	Protein of unknown function DUF308, membrane
-site	1057	IPR005328	Repeat	Sic protein repeat
-site	1058	IPR005492	Repeat	Leucine-rich glioma-inactivated , EPTP repeat
-site	1059	IPR005506	Repeat	Protein of unknown function DUF312, ALF
-site	1060	IPR005529	Repeat	Protein of unknown function DUF321
-site	1061	IPR005560	Repeat	Uncharacterized cysteine-rich protein YhjQ/Copper storage protein-like
-site	1062	IPR006031	Repeat	XYPPX repeat
-site	1063	IPR006150	Repeat	Cysteine-rich repeat
-site	1064	IPR006212	Repeat	Furin-like repeat
-site	1065	IPR006270	Repeat	Streptococcal histidine triad repeat
-site	1066	IPR006489	Repeat	Plasmodium yoelii repeat of length 46
-site	1067	IPR006530	Repeat	YD repeat
-site	1068	IPR006553	Repeat	Leucine-rich repeat, cysteine-containing subtype
-site	1069	IPR006597	Repeat	Sel1-like repeat
-site	1070	IPR006603	Repeat	PQ-loop repeat
-site	1071	IPR006607	Repeat	LARP1-like, DM15 repeat
-site	1072	IPR006616	Repeat	DM9 repeat
-site	1073	IPR006623	Repeat	Testicular haploid expressed repeat
-site	1074	IPR006624	Repeat	Beta-propeller repeat TECPR
-site	1075	IPR006626	Repeat	Parallel beta-helix repeat
-site	1076	IPR006627	Repeat	TDU repeat
-site	1077	IPR006637	Repeat	Clostridial hydrophobic repeat
-site	1078	IPR006652	Repeat	Kelch repeat type 1
-site	1079	IPR006691	Repeat	DNA gyrase/topoisomerase IV, subunit A, C-terminal repeat
-site	1080	IPR006718	Repeat	Dec-1 repeat
-site	1081	IPR006742	Repeat	Mating factor alpha, C-terminal repeat
-site	1082	IPR006763	Repeat	Antigen 332 repeat
-site	1083	IPR006770	Repeat	Opioid growth factor receptor, disordered repeat
-site	1084	IPR006864	Repeat	LMP repeat
-site	1085	IPR006891	Repeat	Type III secretion protein EspF
-site	1086	IPR006970	Repeat	PT repeat
-site	1087	IPR007132	Repeat	Protein of unknown function DUF346
-site	1088	IPR007136	Repeat	Protein of unknown function DUF347
-site	1089	IPR007139	Repeat	Protein of unknown function DUF349
-site	1090	IPR007140	Repeat	Protein of unknown function DUF350
-site	1091	IPR007253	Repeat	Cell wall binding repeat 2
-site	1092	IPR007480	Repeat	Protein of unknown function DUF529
-site	1093	IPR007596	Repeat	Viral A-type inclusion protein repeat
-site	1094	IPR007713	Repeat	TMP repeat
-site	1095	IPR008160	Repeat	Collagen triple helix repeat
-site	1096	IPR008164	Repeat	Repeat of unknown function XGLTT
-site	1097	IPR008440	Repeat	Agglutinin-like protein repeat
-site	1098	IPR008615	Repeat	FNIP
-site	1099	IPR008619	Repeat	Filamentous haemagglutinin repeat
-site	1100	IPR008627	Repeat	GETHR pentapeptide repeat
-site	1101	IPR008727	Repeat	PAAR motif
-site	1102	IPR008850	Repeat	TEP1, N-terminal
-site	1103	IPR008910	Repeat	Mechanosensitive ion channel, conserved TM helix
-site	1104	IPR009039	Repeat	EAR
-site	1105	IPR009223	Repeat	Adenomatous polyposis coli protein repeat
-site	1106	IPR009224	Repeat	SAMP
-site	1107	IPR009240	Repeat	Adenomatous polyposis coli protein, 15 residue repeat
-site	1108	IPR009271	Repeat	Coagulation factor V, LSPD
-site	1109	IPR009306	Repeat	Protein of unknown function DUF963
-site	1110	IPR009484	Repeat	Protein of unknown function DUF1103
-site	1111	IPR009557	Repeat	Repeat of unknown function DUF1174
-site	1112	IPR009578	Repeat	Cell surface antigen I/II A repeat
-site	1113	IPR009603	Repeat	Microtubule associated protein Futsch
-site	1114	IPR009742	Repeat	Curlin associated
-site	1115	IPR009745	Repeat	Cysteine-rich, acidic integral membrane
-site	1116	IPR009761	Repeat	Cytoplasmic repetitive antigen-like
-site	1117	IPR009765	Repeat	Pericardin-like repeat
-site	1118	IPR009805	Repeat	Variable length PCR target
-site	1119	IPR009900	Repeat	Apopolysialoglycoprotein
-site	1120	IPR010069	Repeat	Toxin CdiA-like, Filamentous hemagglutinin motif repeats
-site	1121	IPR010176	Repeat	CxxxxCH...CXXCH motif, Geobacter sulfurreducens
-site	1122	IPR010214	Repeat	Transcription termination factor NusA, C-terminal duplication
-site	1123	IPR010494	Repeat	Repeat of unknown function DUF1079
-site	1124	IPR010568	Repeat	Chlorovirus glycoprotein repeat
-site	1125	IPR010609	Repeat	Gp5, C-terminal
-site	1126	IPR010620	Repeat	Seven Bladed Beta Propeller repeat
-site	1127	IPR010736	Repeat	Sperm-tail PG-rich repeat
-site	1128	IPR010790	Repeat	Repeat of unknown function DUF1388
-site	1129	IPR010853	Repeat	DC-EC
-site	1130	IPR010867	Repeat	NPR nonapeptide
-site	1131	IPR010871	Repeat	Protein of unknown function DUF1502
-site	1132	IPR011110	Repeat	Two component regulator propeller
-site	1133	IPR011498	Repeat	Kelch repeat type 2
-site	1134	IPR011509	Repeat	RtxA toxin
-site	1135	IPR011521	Repeat	YTV
-site	1136	IPR011652	Repeat	MORN variant
-site	1137	IPR011659	Repeat	WD40-like beta-propeller
-site	1138	IPR011690	Repeat	Phosphate-starvation-induced PsiF repeat
-site	1139	IPR011713	Repeat	Leucine-rich repeat 3
-site	1140	IPR011714	Repeat	Seven residue repeat
-site	1141	IPR011716	Repeat	Tetratricopeptide TPR-3
-site	1142	IPR011717	Repeat	Tetratricopeptide TPR-4
-site	1143	IPR011736	Repeat	Ehrlichia tandem repeat
-site	1144	IPR011801	Repeat	Cyanobacterial long protein repeat
-site	1145	IPR011889	Repeat	Bacterial surface protein 26-residue repeat
-site	1146	IPR011936	Repeat	Myxococcus cysteine-rich repeat
-site	1147	IPR011964	Repeat	YVTN beta-propeller repeat
-site	1148	IPR012418	Repeat	CAP160
-site	1149	IPR012488	Repeat	Nodule-specific GRP-repeat
-site	1150	IPR012510	Repeat	Actin-binding, Xin repeat
-site	1151	IPR012568	Repeat	KI67R
-site	1152	IPR012586	Repeat	28S rRNA (cytosine-C(5))-methyltransferase repeat
-site	1153	IPR012587	Repeat	RNA helicase p68 repeat
-site	1154	IPR012598	Repeat	Plasmodium-MYXSPDY
-site	1155	IPR012706	Repeat	Rib/alpha/Esp surface antigen repeat
-site	1156	IPR013101	Repeat	Phosphate response ubiquitin E3 ligase 1-like, LRR
-site	1157	IPR013105	Repeat	Tetratricopeptide repeat 2
-site	1158	IPR013207	Repeat	LGFP
-site	1159	IPR013211	Repeat	LVIVD
-site	1160	IPR013378	Repeat	Internalin B-like, B-repeat
-site	1161	IPR013425	Repeat	Autotransporter-associated beta strand repeat
-site	1162	IPR013431	Repeat	Delta-60 repeat
-site	1163	IPR013517	Repeat	FG-GAP repeat
-site	1164	IPR013519	Repeat	Integrin alpha beta-propellor
-site	1165	IPR013688	Repeat	GBS Bsp-like
-site	1166	IPR014262	Repeat	HAF repeat
-site	1167	IPR015129	Repeat	Titin, Z repeat
-site	1168	IPR015792	Repeat	Kinesin light chain repeat
-site	1169	IPR017845	Repeat	Chlorosome envelope protein H, CsmH
-site	1170	IPR017868	Repeat	Filamin/ABP280 repeat-like
-site	1171	IPR017873	Repeat	Cysteine-rich Golgi apparatus protein 1 repeat, eukaryote
-site	1172	IPR017897	Repeat	Thrombospondin, type 3 repeat
-site	1173	IPR018108	Repeat	Mitochondrial carrier protein, transmembrane region
-site	1174	IPR018159	Repeat	Spectrin/alpha-actinin
-site	1175	IPR018185	Repeat	Gas vesicle C repeat
-site	1176	IPR018337	Repeat	Cell wall/choline-binding repeat
-site	1177	IPR018391	Repeat	Pyrrolo-quinoline quinone beta-propeller repeat
-site	1178	IPR018487	Repeat	Hemopexin-like repeats
-site	1179	IPR018502	Repeat	Annexin repeat
-site	1180	IPR018803	Repeat	Ish1/Msc1-like
-site	1181	IPR018942	Repeat	Seminal vesicle protein repeat
-site	1182	IPR018975	Repeat	Pseudomurein-binding repeat
-site	1183	IPR019541	Repeat	Trappin protein transglutaminase-binding repeat
-site	1184	IPR019552	Repeat	Histidine-rich calcium-binding
-site	1185	IPR019562	Repeat	Micronemal adhesive repeat, sialic-acid binding
-site	1186	IPR019626	Repeat	Stress-induced protein, KGG, repeat
-site	1187	IPR019734	Repeat	Tetratricopeptide repeat
-site	1188	IPR020472	Repeat	PAC1/LIS1-like, WD-40 repeat
-site	1189	IPR020949	Repeat	Prion, copper binding octapeptide repeat region
-site	1190	IPR021021	Repeat	Fibronectin-binding repeat, SSURE
-site	1191	IPR021133	Repeat	HEAT, type 2
-site	1192	IPR021655	Repeat	Putative metal-binding motif
-site	1193	IPR021839	Repeat	Early growth response protein 1, C-terminal
-site	1194	IPR021984	Repeat	Plasmodium repeat
-site	1195	IPR022124	Repeat	Protein of unknown function DUF3659
-site	1196	IPR022365	Repeat	Clathrin, heavy chain, propeller repeat
-site	1197	IPR022435	Repeat	Surface-anchored repeat, actinobacteria
-site	1198	IPR022441	Repeat	Parallel beta-helix repeat-2
-site	1199	IPR022444	Repeat	Cofactor-binding repeat, putative
-site	1200	IPR022519	Repeat	Gloeobacter/Verrucomicrobia repeat
-site	1201	IPR023908	Repeat	xxxLxxG heptad repeat
-site	1202	IPR024446	Repeat	PXPV repeat
-site	1203	IPR024447	Repeat	YXWGXW repeat
-site	1204	IPR024613	Repeat	Huntingtin, N-terminal, HEAT repeats 2
-site	1205	IPR025157	Repeat	Hemagglutinin repeat
-site	1206	IPR025574	Repeat	Nucleoporin FG repeat
-site	1207	IPR025589	Repeat	Topoisomerase C-terminal repeat
-site	1208	IPR025667	Repeat	SprB repeat
-site	1209	IPR025875	Repeat	Leucine rich repeat 4
-site	1210	IPR025900	Repeat	Nuclear receptor repeat
-site	1211	IPR025928	Repeat	Flocculin type 3 repeat
-site	1212	IPR026003	Repeat	HEAT repeat associated with sister chromatid cohesion protein
-site	1213	IPR026393	Repeat	Modification target Cys-rich repeat
-site	1214	IPR026394	Repeat	Streptococcal surface-anchored protein repeat
-site	1215	IPR026435	Repeat	Cys-rich repeat, Myxococcales-type
-site	1216	IPR026471	Repeat	Zinc metalloproteinase 18-residue repeat
-site	1217	IPR026876	Repeat	Fn3 associated repeat
-site	1218	IPR026906	Repeat	BspA-type LRR region
-site	1219	IPR027578	Repeat	Proline-rich tail region repeat
-site	1220	IPR027579	Repeat	Surface protein repeat SSSPR-51
-site	1221	IPR027606	Repeat	Surface protein repeat Ser-Ala-175
-site	1222	IPR027618	Repeat	Beta-propeller repeat, Msarc-type
-site	1223	IPR027636	Repeat	Glucan-binding repeat
-site	1224	IPR028058	Repeat	Fis1, N-terminal tetratricopeptide repeat
-site	1225	IPR028059	Repeat	Putative flagellar system-associated repeat
-site	1226	IPR028061	Repeat	Fis1, C-terminal tetratricopeptide repeat
-site	1227	IPR028150	Repeat	Lustrin, cysteine-rich repeated
-site	1228	IPR028229	Repeat	Integrase repeat unit
-site	1229	IPR029285	Repeat	CagY type 1 repeat
-site	1230	IPR029317	Repeat	KRBA1 family repeat
-site	1231	IPR030895	Repeat	T5SS/PEP-CTERM-associated repeat
-site	1232	IPR030916	Repeat	ELWxxDGT repeat
-site	1233	IPR030930	Repeat	Adhesin of bacterial autotransporter system
-site	1234	IPR031325	Repeat	RHS repeat
-site	1235	IPR031545	Repeat	Signal recognition particle subunit SRP72, TPR-like repeat
-site	1236	IPR031573	Repeat	GPI-anchored cell wall protein repeat
-site	1237	IPR032413	Repeat	Atypical Arm repeat
-site	1238	IPR032774	Repeat	WG containing repeat
-site	1239	IPR039005	Repeat	CSPG repeat
-site	1240	IPR040485	Repeat	Exportin-1, repeat 3
-site	1241	IPR040520	Repeat	Importin 13 repeat
-site	1242	IPR040526	Repeat	Inulin fructotransferase, beta helix repeat
-site	1243	IPR040630	Repeat	Ubiquitous surface protein adhesin repeat
-site	1244	IPR040689	Repeat	SUVR5, C2H2-type Zinc finger, 3 repeats
-site	1245	IPR040709	Repeat	Importin 13, repeat 1
-site	1246	IPR040730	Repeat	Hexapeptide repeat including loop
-site	1247	IPR040831	Repeat	YdcK Beta solenoid repeat
-site	1248	IPR040912	Repeat	Repeat of unknown function DUF5633
-site	1249	IPR040914	Repeat	PH0542 repeat
-site	1250	IPR040928	Repeat	Importin repeat
-site	1251	IPR040931	Repeat	Cadmium carbonic anhydrase repeat
-site	1252	IPR040944	Repeat	Importin 13 repeat 2
-site	1253	IPR040962	Repeat	Tetratricopeptide-like repeat
-site	1254	IPR040972	Repeat	ALMS repeat
-site	1255	IPR041025	Repeat	Homing endonuclease associated repeat
-site	1256	IPR041114	Repeat	Nitrous oxide reductase, propeller repeat 1
-site	1257	IPR041123	Repeat	Chromosome region maintenance repeat
-site	1258	IPR041142	Repeat	Nitrous oxide reductase, propeller repeat 2
-site	1259	IPR041209	Repeat	Vesicle tethering protein p115, armadillo tether-repeat
-site	1260	IPR041235	Repeat	Exportin-1, repeat 2
-site	1261	IPR041257	Repeat	Adenomatous polyposis coli (APC) repeat
-site	1262	IPR041274	Repeat	Isopullulanase beta-solenoid repeat
-site	1263	IPR041281	Repeat	CD180, leucine-rich repeat
-site	1264	IPR041283	Repeat	Leucine-rich repeat unit
-site	1265	IPR041302	Repeat	Ribonuclease inhibitor, leucine rich repeat cap
-site	1266	IPR041303	Repeat	Phage spike trimer 2
-site	1267	IPR041315	Repeat	PlcR, tetratricopeptide repeat
-site	1268	IPR041389	Repeat	Importin repeat 6
-site	1269	IPR041402	Repeat	Dextranase, beta solenoid repeat
-site	1270	IPR041403	Repeat	DUF4458 domain-containing protein, leucine-rich repeat
-site	1271	IPR041508	Repeat	Toxin complex C-like repeat
-site	1272	IPR041653	Repeat	Importin repeat 4
-site	1273	IPR043631	Repeat	QPE repeat
-site	1274	IPR043651	Repeat	KNL1 MELT repeat
-site	1275	IPR043705	Repeat	Plasmodium repeat of length 46
-site	1276	IPR043709	Repeat	Repeats of unknown function DUF5649
-site	1277	IPR043710	Repeat	Repeat of unknown function DUF5650
-site	1278	IPR043822	Repeat	EsV-1-7 cysteine-rich motif
-site	1279	IPR045395	Repeat	ALTTAQ repeat
-site	1280	IPR045458	Repeat	Wolframin, Sel1-like repeat
-site	1281	IPR045571	Repeat	Repeat of unknown function DUF5907
-site	1282	IPR046776	Repeat	Putative pectate lyase-like adhesive domain
-site	1283	IPR046805	Repeat	Tra1, HEAT repeat ring region
-site	1284	IPR046807	Repeat	Tra1, HEAT repeat central region
-site	1285	IPR046837	Repeat	Laa1/Sip1/HEATR5-like, HEAT repeat region
-site	1286	IPR046848	Repeat	E motif
-site	1287	IPR046849	Repeat	E2 motif
-site	1288	IPR046865	Repeat	Flagellar Assembly Protein A, beta solenoid domain
-site	1289	IPR046880	Repeat	Tetratricopeptide Repeats-Sensor
-site	1290	IPR047279	Repeat	Polycomb protein SCMH1, first MBT repeat
-site	1291	IPR047280	Repeat	Polycomb protein SCMH1, second MBT repeat
-site	1292	IPR047351	Repeat	Scm-like with four MBT domains protein 1, third MBT repeat
-site	1293	IPR047352	Repeat	Scm-like with four MBT domains protein 1, second MBT repeat
-site	1294	IPR047353	Repeat	Scm-like with four MBT domains protein 2, first MBT repeat
-site	1295	IPR047354	Repeat	Scm-like with four MBT domains protein 2, third MBT repeat
-site	1296	IPR047355	Repeat	Scm-like with four MBT domains protein 2, fourth MBT repeat
-site	1297	IPR047356	Repeat	Lethal(3)malignant brain tumor-like protein 2, first MBT repeat
-site	1298	IPR047357	Repeat	Lethal(3)malignant brain tumor-like protein 2, second MBT repeat
-site	1299	IPR047358	Repeat	Polycomb protein Sfmbt, first MBT repeat
-site	1300	IPR047359	Repeat	Polycomb protein Sfmbt, second MBT repeat
-site	1301	IPR047360	Repeat	Polycomb protein Sfmbt, third MBT repeat
-site	1302	IPR047361	Repeat	Lethal(3)malignant brain tumor-like protein 1, first MBT repeat
-site	1303	IPR047362	Repeat	Lethal(3)malignant brain tumor-like protein 1, third MBT repeat
-site	1304	IPR047589	Repeat	DUF11 repeat
-site	1305	IPR047881	Repeat	LktA-like tandem repeat
-site	1306	IPR048407	Repeat	Dumpy, DPY module
-site	1307	IPR048411	Repeat	Huntingtin, N-terminal, HEAT repeats 1
-site	1308	IPR048412	Repeat	Huntingtin, bridge
-site	1309	IPR048413	Repeat	Huntingtin, C-terminal HEAT repeats
-site	1310	IPR048506	Repeat	LED repeat
-site	1311	IPR048507	Repeat	WKTW repeat
-site	1312	IPR048518	Repeat	Ice-binding protein, beta roll
-site	1313	IPR048568	Repeat	RTX toxin, C-terminal repeat
-site	1314	IPR048706	Repeat	Cellophane-induced 1 repeat
-site	1315	IPR048713	Repeat	Choline-binding repeat
-site	1316	IPR048829	Repeat	Pre-mRNA cleavage complex 2 protein Pcf11, RFEGP repeat
-site	1317	IPR048893	Repeat	Nuclear pore complex-interacting protein B13-like, MII repeat
-site	1318	IPR048996	Repeat	PGRS repeats
-site	1319	IPR049039	Repeat	Regulator of microtubule dynamics protein 1-3, alpha helical repeats
-site	1320	IPR049147	Repeat	FAM186A, PQQAQ repeat
-site	1321	IPR049150	Repeat	EFR3 protein, HEAT-like repeat region
-site	1322	IPR049152	Repeat	EFR3-like, armadillo repeat
-site	1323	IPR049362	Repeat	TELO2-interacting protein 1, middle region repeats
-site	1324	IPR049367	Repeat	Testis-expressed protein 13C/D, MVPLGDSxSHS repeat
-site	1325	IPR049408	Repeat	UV-stimulated scaffold protein A, N-terminal alpha-solenoid repeats
-site	1326	IPR049419	Repeat	Reelin, subrepeat B
-site	1327	IPR049451	Repeat	Adhesin AWP2-like, C-terminal YTTT repeat
-site	1328	IPR049502	Repeat	Suprabasin, GxHH repeat
-site	1329	IPR049511	Repeat	Polyglycine hydrolase-like, tandem repeat
-site	1330	IPR049531	Repeat	Antifreeze protein repeat
-site	1331	IPR049536	Repeat	Properdin, thrombospondin type 1 repeat 0
-site	1332	IPR049538	Repeat	Plectin-like, spectrin-like repeat
-site	1333	IPR049547	Repeat	WD repeat-containing protein 93 beta-propeller
-site	1334	IPR049895	Repeat	Streptococcal M protein, D repeats
-site	1335	IPR049896	Repeat	Streptococcal M proteins C repeat
-site	1336	IPR049964	Repeat	Sialidase A repeat
-site	1337	IPR054014	Repeat	Surface cell antigen Sca2 helical repeat
-site	1338	IPR054019	Repeat	Properdin, thrombospondin type 1 C-terminal
-site	1339	IPR054051	Repeat	Mucin-20 repeat
-site	1340	IPR054283	Repeat	Domain of unknown function (DUF7017)
-site	1341	IPR054500	Repeat	Phage tail fiber repeat
-site	1342	IPR055063	Repeat	Small ribosomal subunit protein mS39, PPR
-site	1343	IPR055358	Repeat	Clathrin heavy-chain repeat
-site	1344	IPR055530	Repeat	Repeat of unknown function DUF7104
-site	1345	IPR057148	Repeat	Repeat of unknown function DUF7826
-site	1346	IPR057221	Repeat	Repeat of unknown function DUF7899
-site	1347	IPR057233	Repeat	Repeat of unknown function DUF7911
-site	1348	IPR057236	Repeat	Repeat of unknown function DUF7914
-site	1349	IPR057308	Repeat	PEP5/VPS11, clathrin heavy-chain repeat
-site	1350	IPR057361	Repeat	WD repeat-containing protein 35, TPR repeats
-site	1351	IPR057445	Repeat	ATM-like, TPR repeat
-site	1352	IPR057466	Repeat	CFAP46, N-terminal TPR repeat
-site	1353	IPR057481	Repeat	Decapeptide repeat
-site	1354	IPR057583	Repeat	PYCO1, Rubisco-binding repeat
-site	1355	IPR057711	Repeat	Repeat of unknown function DUF7951
-site	1356	IPR057941	Repeat	Transportin-3/Importin-13, second TPR domain
-site	1357	IPR057942	Repeat	Transportin-3/Importin-13, third TPR domain
-site	1358	IPR058093	Repeat	LA_2272-like repeat
-site	1359	IPR058263	Repeat	Repeat of unknown function DUF7957
-site	1360	IPR058347	Repeat	Repeat of unknown function DUF8034
-site	1361	IPR058392	Repeat	Repeat of unknown function DUF8079
-site	1362	IPR058450	Repeat	Repeat of unknown function DUF8137
-site	1363	IPR058537	Repeat	Transportin-3/Importin-13, fourth TPR domain
-site	1364	IPR059100	Repeat	Bacterial TSP3 repeat
-site	1365	IPR059164	Repeat	PRP39, C-terminal HAT repeat
-site	1366	IPR000152	PTM	EGF-type aspartate/asparagine hydroxylation site
-site	1367	IPR001020	PTM	Phosphotransferase system, HPr histidine phosphorylation site
-site	1368	IPR002114	PTM	Phosphotransferase system, HPr serine phosphorylation site
-site	1369	IPR002332	PTM	Nitrogen regulatory protein P-II, urydylation site
-site	1370	IPR004091	PTM	Chemotaxis methyl-accepting receptor, methyl-accepting site
-site	1371	IPR006141	PTM	Intein N-terminal splicing region
-site	1372	IPR006162	PTM	Phosphopantetheine attachment site
-site	1373	IPR012902	PTM	Prokaryotic N-terminal methylation site
-site	1374	IPR018051	PTM	Surfactant-associated polypeptide, palmitoylation site
-site	1375	IPR018070	PTM	Neuromedin U, amidation site
-site	1376	IPR018243	PTM	Neuromodulin, palmitoylation site
-site	1377	IPR018303	PTM	P-type ATPase, phosphorylation site
-site	1378	IPR019736	PTM	Synapsin, phosphorylation site
-site	1379	IPR019769	PTM	Translation initiation factor 5A, hypusine site
-site	1380	IPR021020	PTM	Adhesin, Dr family, signal peptide
-site	1381	IPR029259	PTM	Rapamycin-insensitive companion of mTOR, phosphorylation-site
-site	1382	IPR033137	PTM	Neuromodulin, phosphorylation site
+site	974	IPR000152	PTM	EGF-type aspartate/asparagine hydroxylation site
+site	975	IPR001020	PTM	Phosphotransferase system, HPr histidine phosphorylation site
+site	976	IPR002114	PTM	Phosphotransferase system, HPr serine phosphorylation site
+site	977	IPR002332	PTM	Nitrogen regulatory protein P-II, urydylation site
+site	978	IPR004091	PTM	Chemotaxis methyl-accepting receptor, methyl-accepting site
+site	979	IPR006141	PTM	Intein N-terminal splicing region
+site	980	IPR006162	PTM	Phosphopantetheine attachment site
+site	981	IPR012902	PTM	Prokaryotic N-terminal methylation site
+site	982	IPR018051	PTM	Surfactant-associated polypeptide, palmitoylation site
+site	983	IPR018070	PTM	Neuromedin U, amidation site
+site	984	IPR018243	PTM	Neuromodulin, palmitoylation site
+site	985	IPR018303	PTM	P-type ATPase, phosphorylation site
+site	986	IPR019736	PTM	Synapsin, phosphorylation site
+site	987	IPR019769	PTM	Translation initiation factor 5A, hypusine site
+site	988	IPR021020	PTM	Adhesin, Dr family, signal peptide
+site	989	IPR029259	PTM	Rapamycin-insensitive companion of mTOR, phosphorylation-site
+site	990	IPR033137	PTM	Neuromodulin, phosphorylation site
